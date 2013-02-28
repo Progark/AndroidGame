@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 public abstract class Player {
 	private ArrayList<Unit> units;
-	int playerNo;
+	private int playerNo;
+	private int playerName;
 	
+
 	public Player(){
 		
 	}
@@ -24,5 +26,13 @@ public abstract class Player {
 
 	public void setPlayerNo(int playerNo) {
 		this.playerNo = playerNo;
+	}
+
+	public int getPlayerName() {
+		return playerName;
+	}
+	
+	public void setPlayerName(int playerName) {
+		this.playerName = playerName;
 	}
 }
