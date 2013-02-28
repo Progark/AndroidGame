@@ -1,5 +1,7 @@
 package progark.pkg.game;
 
+import android.graphics.Canvas;
+
 public class InGameGUI {
 
 	private Board board;
@@ -11,4 +13,6 @@ public class InGameGUI {
 		
 	}
 	
+	public void draw(Canvas canvas){
+	}
 }

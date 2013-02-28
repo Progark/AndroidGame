@@ -1,5 +1,7 @@
 package progark.pkg.game;
 
+import android.graphics.Canvas;
+
 public class BoardMenu {
 	private int menuHeight, menuWidth; //TODO: Sette disse verdien når man har en meny
 	
@@ -23,6 +25,8 @@ public class BoardMenu {
 		this.menuWidth = menuWidth;
 	}
 	
+	public void draw(Canvas canvas){
+	}
 	
 	
 }
