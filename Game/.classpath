@@ -4,6 +4,6 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry kind="lib" path="C:/Users/Bjodol/Documents/GitHub/AndroidGame/Game/libs/sheep.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/Sofia/Dropbox/Skole/Workspaces/sheep.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
