@@ -10,9 +10,9 @@ public class InGameGUI {
 	public InGameGUI(int scrHeight, int scrWidth) {
 		boardMenu = new BoardMenu();
 		board = new Board(scrHeight - boardMenu.getMenuHeight(), scrWidth - boardMenu.getMenuWidth());
-		
 	}
 	
 	public void draw(Canvas canvas){
+		
 	}
 }

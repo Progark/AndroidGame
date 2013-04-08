@@ -4,13 +4,8 @@ import sheep.graphics.Image;
 
 public abstract class Unit {
 	private String name;
-	private int health, strength, skill, defence;
+	private int health, strength, skill, defence, range;
 	private Image unitImage;
-
-
-	public Unit(String name, int h, int s, int skill){
-		
-	}
 
 	public String getName() {
 		return name;
@@ -50,6 +45,14 @@ public abstract class Unit {
 	
 	public void setDefence(int defence) {
 		this.defence = defence;
+	}
+	
+	public int getRange() {
+		return range;
+	}
+	
+	public void setRange(int range){
+		this.range = range;
 	}
 	
 	public Image getUnitImage() {
