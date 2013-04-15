@@ -27,10 +27,10 @@ public class GameMechanics extends State implements TouchListener{
 	public void draw(Canvas canvas) {
 		scrHeight = canvas.getHeight();
 		scrWidth = canvas.getWidth();
-		//		setup();
+		setup();
 
-		//		Gui.draw(canvas);
-		canvas.drawColor(Color.BLUE);
+		Gui.draw(canvas);
+		//canvas.drawColor(Color.BLUE);
 		player1.draw(canvas);
 		
 		for (Unit u : player1.getUnits()) {
@@ -107,8 +107,6 @@ public class GameMechanics extends State implements TouchListener{
 	/* En metod til å opprette gui'et i henhold til skjermstørrelsen
 	 * fordi man i sheep kun kan hente skjermstørrelsen i draw og 
 	 * dermed må opprette ting etter dette. 
-	 * 
-	 * Denne gj¿r forel¿pig at emulatoren ikke kan starte
 	 */
 	private void setup(){
 		if (!setup) {

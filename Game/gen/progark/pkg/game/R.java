@@ -28,6 +28,9 @@ public final class R {
         public static final int s=0x7f020004;
         public static final int sw1=0x7f020005;
         public static final int sw2=0x7f020006;
+        public static final int tile=0x7f020007;
+        public static final int tilegreen=0x7f020008;
+        public static final int tilered=0x7f020009;
     }
     public static final class id {
         public static final int action_settings=0x7f080000;

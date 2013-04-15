@@ -16,6 +16,6 @@ public class InGameGUI {
 	
 	
 	public void draw(Canvas canvas){
-		canvas.drawColor(Color.BLUE);
+		board.draw(canvas);
 	}
 }
