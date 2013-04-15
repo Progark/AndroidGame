@@ -2,6 +2,7 @@ package progark.pkg.game;
 
 import android.graphics.Canvas;
 
+//Den som inneholder totalt liv
 public class BoardMenu {
 	private int menuHeight, menuWidth; //TODO: Sette disse verdien når man har en meny
 	
