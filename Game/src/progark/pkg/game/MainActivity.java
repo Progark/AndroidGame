@@ -12,7 +12,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Game game = new Game(this, null);
-        game.pushState(new GameMechanics());
+        game.pushState(new StartMenuView());
         setContentView(game);
     }
 

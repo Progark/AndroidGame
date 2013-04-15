@@ -2,6 +2,7 @@ package progark.pkg.game;
 
 import sheep.graphics.Image;
 
+//Her må det taes hensyn til at en unit kan være sterkere enn en annen, må derfor gange opp helse og angrep
 public class MeleeUnit extends Unit {
 
 	public MeleeUnit() {
@@ -12,6 +13,5 @@ public class MeleeUnit extends Unit {
 		this.setSkill(40);
 		this.setStrength(60);
 		this.setRange(1);
-	}
-	
+	}	
 }
