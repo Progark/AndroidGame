@@ -1,12 +1,40 @@
 package progark.pkg.game;
 
-import sheep.graphics.Image;
+import java.util.ArrayList;
 
-public abstract class Unit {
+import sheep.game.Sprite;
+import sheep.graphics.Image;
+import sheep.graphics.SpriteView;
+
+public abstract class Unit extends Sprite{
 	private String name;
 	private int health, strength, skill, defence, range;
-	private Image unitImage;
+	private ArrayList<Image> images;
+	private float time = 0;
+	private int frameCount = 0;
+	private boolean isSelected = false;
 
+	public Unit(Image i, Image i2, Image i3){
+		super(i);
+		images = new ArrayList<Image>();
+		images.add(i);
+		images.add(i2);
+		images.add(i3);
+		setPosition(100f, 100f);
+	}
+	
+	@Override
+	public void update(float dt){
+		super.update(dt);
+		time += dt;
+		if (time >= 0.1){
+			frameCount ++;
+			if (frameCount > 2)
+				frameCount = 1;
+			setView((SpriteView)images.get(frameCount));
+		}
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -55,11 +83,27 @@ public abstract class Unit {
 		this.range = range;
 	}
 	
-	public Image getUnitImage() {
-		return unitImage;
+	public void setSelected(){
+		if (isSelected)
+			isSelected = false;
+		else
+			isSelected = true;
 	}
 	
-	public void setUnitImage(Image unitImage) {
-		this.unitImage = unitImage;
+	public boolean isSelected(){
+		return isSelected;
 	}
+	
+	
+	/*
+	 * Disse trengs vel egentlig ikke? Siden vi bruker image er det vel like greit å gjøre det på samme måte som Alf Inge har gjort i
+	 * eksempelet sitt. Da må man kalle på super(image) i konstruktøren til spriten 
+	 */
+//	public Image getUnitImage() {
+//		return unitImage;
+//	}
+//	
+//	public void setUnitImage(Image unitImage) {
+//		this.unitImage = unitImage;
+//	}
 }

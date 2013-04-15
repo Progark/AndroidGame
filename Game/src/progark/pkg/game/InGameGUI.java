@@ -1,6 +1,8 @@
 package progark.pkg.game;
 
+
 import android.graphics.Canvas;
+import android.graphics.Color;
 
 public class InGameGUI {
 
@@ -12,7 +14,8 @@ public class InGameGUI {
 		board = new Board(scrHeight - boardMenu.getMenuHeight(), scrWidth - boardMenu.getMenuWidth());
 	}
 	
+	
 	public void draw(Canvas canvas){
-		
+		canvas.drawColor(Color.BLUE);
 	}
 }

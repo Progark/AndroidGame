@@ -25,6 +25,9 @@ public class BoardTile extends Sprite {
 	public int getyPos() {
 		return yPos;
 	}
+	public void setYPos(int yPos){
+		this.yPos = yPos;
+	}
 	
 	
 	
