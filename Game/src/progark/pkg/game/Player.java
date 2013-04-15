@@ -2,6 +2,8 @@ package progark.pkg.game;
 
 import java.util.ArrayList;
 
+import android.graphics.Canvas;
+
 public class Player {
 	private ArrayList<Unit> units;
 	private int playerNo;
@@ -10,11 +12,23 @@ public class Player {
 
 	public Player(/*String playerName*/){
 		//setPlayerName(playerName);
-		addUnits(new MeleeUnit());
-		addUnits(new MeleeUnit());
-		addUnits(new RangedUnit());
+		units = new ArrayList<Unit>();
+		addUnits(new MeleeUnit(100, 100));
+		addUnits(new MeleeUnit(100, 300));
+		addUnits(new RangedUnit(100, 500));
 	}
-
+	
+	public void draw(Canvas canvas){
+		for (Unit u : units) {
+			u.draw(canvas);
+		}
+	}
+	
+	public void update(float dt){
+		for (Unit u : units) {
+			u.update(dt);
+		}
+	}
 	public ArrayList<Unit> getUnits() {
 		return units;
 	}
@@ -27,6 +41,14 @@ public class Player {
 		this.units.add(unit);
 	}
 
+	public int getHealth(){
+		int health = 0;
+		for (Unit unit : units) {
+			health += unit.getHealth();
+		}
+		return health;
+	}
+	
 	public int getPlayerNo() {
 		return playerNo;
 	}
