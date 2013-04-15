@@ -14,6 +14,8 @@ public class GameMechanics extends State implements TouchListener{
 	private RangedUnit ru;
 	private float newX, newY;
 	private boolean isMoving;
+	private Player player1;
+	private Player player2;
 
 	public GameMechanics() {
 		setup = false;
@@ -21,6 +23,8 @@ public class GameMechanics extends State implements TouchListener{
 		ru = new RangedUnit();
 		newX = mu.getX();
 		newY = mu.getY();
+		player1 = new Player();
+		player2 = new Player();
 		
 
 	}
