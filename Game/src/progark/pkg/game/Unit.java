@@ -12,12 +12,18 @@ public abstract class Unit extends Sprite{
 	private ArrayList<Image> images;
 	private float time = 0;
 	private int frameCount = 0;
-	private boolean isSelected = false;
-	private int posSqX, posSqY;	//Dette skal være posisjonen i de store firkantene
+	private int posSqX, posSqY;
 
 	public Unit(Image i, Image i2, Image i3){
 		super(i);
 		setShape(i.getWidth(), i.getHeight());
+		float x = 100/i.getWidth();
+		float y = 100/i.getWidth();
+		setScale(x, y);
+		float offsetX = i.getWidth()/2.0f;
+		float offsetY = i.getHeight()/2.0f;
+		setOffset(0, 0);
+		
 		images = new ArrayList<Image>();
 		images.add(i);
 		images.add(i2);
@@ -28,7 +34,7 @@ public abstract class Unit extends Sprite{
 	public void update(float dt){
 		super.update(dt);
 		time += dt;
-		if (time >= 0.1){
+		if (time >= 0.5){
 			frameCount ++;
 			if (frameCount > 2)
 				frameCount = 0;
@@ -84,42 +90,19 @@ public abstract class Unit extends Sprite{
 		this.range = range;
 	}
 	
-	public void setSelected(){
-		if (isSelected)
-			isSelected = false;
-		else
-			isSelected = true;
-	}
-	
-	public boolean isSelected(){
-		return isSelected;
-	}
-	
-	public int getPosX(){
+	public int getSquareX(){
 		return posSqX;
 	}
 	
-	public int getPosY(){
+	public int getSquareY(){
 		return posSqY;
 	}
 	
-	public void setPosSqX(int px){
+	public void setSquareX(int px){
 		posSqX = px;
 	}
 	
-	public void setPosSqY(int py){
+	public void setSquareY(int py){
 		posSqY = py;
 	}
-	
-	/*
-	 * Disse trengs vel egentlig ikke? Siden vi bruker image er det vel like greit å gjøre det på samme måte som Alf Inge har gjort i
-	 * eksempelet sitt. Da må man kalle på super(image) i konstruktøren til spriten 
-	 */
-//	public Image getUnitImage() {
-//		return unitImage;
-//	}
-//	
-//	public void setUnitImage(Image unitImage) {
-//		this.unitImage = unitImage;
-//	}
 }

@@ -6,7 +6,7 @@ import sheep.graphics.Image;
 public class MeleeUnit extends Unit {
 
 	public MeleeUnit(float x, float y) {
-		super(new Image(R.drawable.s), new Image(R.drawable.sw1), new Image(R.drawable.sw2));
+		super(new Image(R.drawable.sw1frame), new Image(R.drawable.sw2frame), new Image(R.drawable.sw3frame));
 		setPosition(x, y);
 		this.setName("M");
 		this.setDefence(70);

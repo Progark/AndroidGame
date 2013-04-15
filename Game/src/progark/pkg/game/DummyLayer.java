@@ -11,7 +11,7 @@ public class DummyLayer extends State{
 	
 	
 	public DummyLayer(){
-		du = new DummyUnit(new Image(R.drawable.s), new Image(R.drawable.sw1), new Image(R.drawable.sw2));
+		du = new DummyUnit(new Image(R.drawable.sw1frame), new Image(R.drawable.sw1frame), new Image(R.drawable.sw2frame));
 	}
 	
 	@Override

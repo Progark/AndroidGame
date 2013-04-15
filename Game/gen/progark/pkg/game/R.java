@@ -21,16 +21,24 @@ public final class R {
         public static final int activity_vertical_margin=0x7f040001;
     }
     public static final class drawable {
-        public static final int aw1=0x7f020000;
-        public static final int aw2=0x7f020001;
-        public static final int aw3=0x7f020002;
+        public static final int aw1frame=0x7f020000;
+        public static final int aw2frame=0x7f020001;
+        public static final int aw3frame=0x7f020002;
         public static final int ic_launcher=0x7f020003;
+<<<<<<< HEAD
         public static final int s=0x7f020004;
         public static final int sw1=0x7f020005;
         public static final int sw2=0x7f020006;
         public static final int tile=0x7f020007;
         public static final int tilegreen=0x7f020008;
         public static final int tilered=0x7f020009;
+=======
+        public static final int sw1frame=0x7f020004;
+        public static final int sw2frame=0x7f020005;
+        public static final int sw3frame=0x7f020006;
+        public static final int tile=0x7f020007;
+        public static final int tilegreen=0x7f020008;
+>>>>>>> Singleplayer spilling er nå mulig
     }
     public static final class id {
         public static final int action_settings=0x7f080000;

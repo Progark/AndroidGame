@@ -13,9 +13,9 @@ public class Player {
 	public Player(/*String playerName*/){
 		//setPlayerName(playerName);
 		units = new ArrayList<Unit>();
-		addUnits(new MeleeUnit(100, 100));
-		addUnits(new MeleeUnit(100, 300));
-		addUnits(new RangedUnit(100, 500));
+		addUnits(new MeleeUnit(0,0));
+		addUnits(new MeleeUnit(0, 100));
+		addUnits(new RangedUnit(0, 200));
 	}
 	
 	public void draw(Canvas canvas){
