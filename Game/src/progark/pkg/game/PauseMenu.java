@@ -33,11 +33,14 @@ public class PauseMenu extends State{
 		canvas.drawColor(color.darker_gray);
 		canvas.drawRect(rect, paint1);
 		canvas.drawText("Resume",canvasHeight/2-100, canvasWidth/2-25, paint2);
+		canvas.drawText("You have paused the game", 20, canvasWidth/2 -25, paint1);
 	}
 	
 	@Override
 	public boolean onTouchDown(MotionEvent me){
-		
+		if(rect.contains((int)me.getX(), (int)me.getY())){
+			getGame().popState();
+		}
 		return true;
 	}
 	
