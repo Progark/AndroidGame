@@ -67,7 +67,7 @@ public class BoardMenu {
 	
 	public void onTouchDown(MotionEvent me){
 		if(pauseButton.contains((int)me.getX(), (int)me.getY())){
-			getGame().pushState(new GameMechanics());
+			//getGame().pushState(new GameMechanics());
 		}
 	}
 	
