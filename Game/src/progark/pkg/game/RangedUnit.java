@@ -4,8 +4,9 @@ import sheep.graphics.Image;
 
 public class RangedUnit extends Unit {
 
-	public RangedUnit() {
+	public RangedUnit(float x, float y) {
 		super(new Image(R.drawable.aw1), new Image(R.drawable.aw2), new Image(R.drawable.aw3));	//Her må bildefilnavnene endres
+		setPosition(x, y);
 		this.setName("R");
 		this.setDefence(30);
 		this.setHealth(60);

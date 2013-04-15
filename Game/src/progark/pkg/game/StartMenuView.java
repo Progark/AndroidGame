@@ -49,10 +49,8 @@ public class StartMenuView extends State {
 
 	@Override
 	public boolean onTouchDown(MotionEvent me){
-		if ((me.getX() >= (int)canvasWidth/2 - 200) && (me.getX() <= (int)canvasWidth/2 + 200)
-				&& (me.getY() >= (int)canvasHeight/2 - 100) && (me.getY() <= canvasHeight/2 + 100))
-			getGame().pushState(new GameMechanics());
-
+		if (rect.contains((int)me.getX(), (int)me.getY()))
+				getGame().pushState(new GameMechanics());
 		return true;
 	}
 }

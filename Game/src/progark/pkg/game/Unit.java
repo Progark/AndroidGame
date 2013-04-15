@@ -13,14 +13,15 @@ public abstract class Unit extends Sprite{
 	private float time = 0;
 	private int frameCount = 0;
 	private boolean isSelected = false;
+	private int posSqX, posSqY;	//Dette skal være posisjonen i de store firkantene
 
 	public Unit(Image i, Image i2, Image i3){
 		super(i);
+		setShape(i.getWidth(), i.getHeight());
 		images = new ArrayList<Image>();
 		images.add(i);
 		images.add(i2);
 		images.add(i3);
-		setPosition(100f, 100f);
 	}
 	
 	@Override
@@ -30,7 +31,7 @@ public abstract class Unit extends Sprite{
 		if (time >= 0.1){
 			frameCount ++;
 			if (frameCount > 2)
-				frameCount = 1;
+				frameCount = 0;
 			setView((SpriteView)images.get(frameCount));
 		}
 	}
@@ -94,6 +95,21 @@ public abstract class Unit extends Sprite{
 		return isSelected;
 	}
 	
+	public int getPosX(){
+		return posSqX;
+	}
+	
+	public int getPosY(){
+		return posSqY;
+	}
+	
+	public void setPosSqX(int px){
+		posSqX = px;
+	}
+	
+	public void setPosSqY(int py){
+		posSqY = py;
+	}
 	
 	/*
 	 * Disse trengs vel egentlig ikke? Siden vi bruker image er det vel like greit å gjøre det på samme måte som Alf Inge har gjort i
