@@ -8,9 +8,10 @@ public class InGameGUI {
 
 	private Board board;
 	private BoardMenu boardMenu;
+	private GameMechanics gm;
 	
 	public InGameGUI(int scrHeight, int scrWidth) {
-		boardMenu = new BoardMenu();
+		boardMenu = new BoardMenu(gm);
 		board = new Board(scrHeight - boardMenu.getMenuHeight(), scrWidth - boardMenu.getMenuWidth());
 	}
 	

@@ -16,10 +16,11 @@ public class PauseMenu extends State{
 	private int i = 0;
 	
 	public PauseMenu(){
-		this.paint1 = new Paint(Color.WHITE);
-		this.paint2 = new Paint(Color.BLACK);
+		paint1 = new Paint();
+		paint1.setColor(Color.WHITE);
+		paint2 = new Paint();
+		paint2.setColor(Color.BLACK);
 		paint2.setTextSize(35);
-		
 	}
 	
 	@Override
