@@ -16,6 +16,7 @@ public class StartMenuView extends State {
 	private Paint paint2;
 	private float canvasHeight, canvasWidth;
 	private int i = 0;
+	private boolean popGameMechanics = false;
 
 	public StartMenuView(){
 
@@ -26,7 +27,13 @@ public class StartMenuView extends State {
 		paint2.setTextSize(20);
 
 	}
-
+	
+	public void setPopGameMechanics(){
+		
+		getGame().popState();
+		getGame().popState();
+	}
+	
 	@Override
 	public void update(float dt){
 
@@ -50,7 +57,7 @@ public class StartMenuView extends State {
 	@Override
 	public boolean onTouchDown(MotionEvent me){
 		if (rect.contains((int)me.getX(), (int)me.getY()))
-				getGame().pushState(new GameMechanics());
+				getGame().pushState(new GameMechanics(this));
 		return true;
 	}
 }

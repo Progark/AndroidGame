@@ -8,14 +8,31 @@ public class Player {
 	private ArrayList<Unit> units;
 	private int playerNo;
 	private String playerName;
+	private float maxTotalHealth = 0.0f;
 	
 
-	public Player(/*String playerName*/){
+	public Player(int p){
 		//setPlayerName(playerName);
-		units = new ArrayList<Unit>();
-		addUnits(new MeleeUnit(0,0));
-		addUnits(new MeleeUnit(0, 100));
-		addUnits(new RangedUnit(0, 200));
+		
+		
+		if (p == 1){
+			units = new ArrayList<Unit>();
+			addUnits(new MeleeUnit(0,2*Globals.TILE_SIZE));
+			addUnits(new MeleeUnit(0, 4*Globals.TILE_SIZE));
+			addUnits(new RangedUnit(0, 6*Globals.TILE_SIZE));
+		} else {
+			units = new ArrayList<Unit>();
+			addUnits(new MeleeUnit(6*Globals.TILE_SIZE,2*Globals.TILE_SIZE));
+			addUnits(new MeleeUnit(6*Globals.TILE_SIZE, 4*Globals.TILE_SIZE));
+			addUnits(new RangedUnit(6*Globals.TILE_SIZE, 6*Globals.TILE_SIZE));
+			for (Unit unit : units) {
+				unit.flip();
+			}
+			
+		}
+		for (Unit u : units) {
+			maxTotalHealth += u.getHealth();
+		}
 	}
 	
 	public void draw(Canvas canvas){
@@ -63,5 +80,9 @@ public class Player {
 	
 	public void setPlayerName(String playerName) {
 		this.playerName = playerName;
+	}
+	
+	public float getMaxTotalHealth(){
+		return maxTotalHealth;
 	}
 }
