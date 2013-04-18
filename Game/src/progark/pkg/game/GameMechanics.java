@@ -39,6 +39,7 @@ public class GameMechanics extends State implements TouchListener{
 	private StartMenuView smv;
 	
 	private BoardMenu boardMenu;
+	private Board board;
 	
 	public GameMechanics(StartMenuView smv) {
 		this.smv = smv;
@@ -58,15 +59,15 @@ public class GameMechanics extends State implements TouchListener{
 		Image image = new Image(R.drawable.tile);
 		float sx = Globals.TILE_SIZE/image.getWidth();
 		float sy = Globals.TILE_SIZE/image.getHeight();
-		for (int i = 0; i < 9; i++) {
-			sprites.add(new ArrayList<Sprite>());
-			for (int j = 0; j < 7; j++) {
-				sprites.get(i).add(new Sprite(image));
-				sprites.get(i).get(j).setPosition(j*Globals.TILE_SIZE, i*Globals.TILE_SIZE + Globals.TILE_SIZE);	//Legge til ny avstand hvis ting funker
-				sprites.get(i).get(j).setOffset(0,0);
-				sprites.get(i).get(j).setScale(sx, sy);
-			}
-		}
+//		for (int i = 0; i < 9; i++) {
+//			sprites.add(new ArrayList<Sprite>());
+//			for (int j = 0; j < 7; j++) {
+//				sprites.get(i).add(new Sprite(image));
+//				sprites.get(i).get(j).setPosition(j*Globals.TILE_SIZE, i*Globals.TILE_SIZE + Globals.TILE_SIZE);	//Legge til ny avstand hvis ting funker
+//				sprites.get(i).get(j).setOffset(0,0);
+//				sprites.get(i).get(j).setScale(sx, sy);
+//			}
+//		}
 		
 
 		//Sprite som endrer fargen pŒ bakgrunnen til den valgte uniten
@@ -88,15 +89,13 @@ public class GameMechanics extends State implements TouchListener{
 		displayHealthUnitSprite.setPosition(-150, -150);
 
 		boardMenu = new BoardMenu(this);
+		board = new Board();
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
 		scrHeight = canvas.getHeight();
 		scrWidth = canvas.getWidth();
-		//		setup();
-		//		Gui.draw(canvas);
-
 		canvas.drawColor(Color.GREEN);
 		
 
@@ -130,6 +129,7 @@ public class GameMechanics extends State implements TouchListener{
 		}
 
 		boardMenu.draw(canvas);
+		board.draw(canvas);
 		
 		if (timeLeftOfAttackAnimation > 0 && displayHealthUnit != null){
 			displayHealthUnitSprite.draw(canvas);
@@ -517,6 +517,17 @@ public class GameMechanics extends State implements TouchListener{
 	public int getTurn(){
 		return turn;
 	}
+
+	/* En metod til å opprette gui'et i henhold til skjermstørrelsen
+	 * fordi man i sheep kun kan hente skjermstørrelsen i draw og 
+	 * dermed må opprette ting etter dette. 
+	 */
+	private void setup(){
+		if (!setup) {
+			Gui = new InGameGUI(scrHeight, scrWidth);
+			setup = true;
+		}
+	}
 }
 
 
@@ -533,14 +544,4 @@ public class GameMechanics extends State implements TouchListener{
 
 
 
-//	/* En metod til å opprette gui'et i henhold til skjermstørrelsen
-//	 * fordi man i sheep kun kan hente skjermstørrelsen i draw og 
-//	 * dermed må opprette ting etter dette. 
-//	 */
-//	private void setup(){
-//		if (!setup) {
-//			Gui = new InGameGUI(scrHeight, scrWidth);
-//			setup = true;
-//		}
-//	}
 

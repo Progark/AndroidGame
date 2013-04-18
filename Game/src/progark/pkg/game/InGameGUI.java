@@ -12,7 +12,7 @@ public class InGameGUI {
 	
 	public InGameGUI(int scrHeight, int scrWidth) {
 		boardMenu = new BoardMenu(gm);
-		board = new Board(scrHeight - boardMenu.getMenuHeight(), scrWidth - boardMenu.getMenuWidth());
+		board = new Board();
 	}
 	
 	
