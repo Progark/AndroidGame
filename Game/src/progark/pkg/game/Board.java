@@ -1,8 +1,5 @@
 package progark.pkg.game;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import sheep.game.Sprite;
 import sheep.graphics.Image;
 
@@ -11,7 +8,7 @@ import android.graphics.Canvas;
 public class Board {
 	private int boardHeight = 11, boardWidth = 7;
 	private Image boardTileImage;
-	private Sprite[][] boardArray;
+	private BoardTile[][] boardArray;
 	float sx, sy;
 
 	public Board() {
@@ -21,10 +18,10 @@ public class Board {
 		sy = Globals.TILE_SIZE/boardTileImage.getHeight();
 		
 		
-		boardArray = new Sprite[boardHeight][boardWidth];
+		boardArray = new BoardTile[boardHeight][boardWidth];
 		for (int i = 0; i < boardHeight; i++) {
 			for (int j = 0; j < boardWidth; j++) {
-				Sprite tempSprite = new Sprite(new Image(R.drawable.tile));
+				BoardTile tempSprite = new BoardTile(new Image(R.drawable.tile));
 				tempSprite.setOffset(0, 0);
 				tempSprite.setScale(sx, sy);
 				tempSprite.setPosition(i*Globals.TILE_SIZE,j*Globals.TILE_SIZE + Globals.TILE_SIZE);
@@ -41,7 +38,6 @@ public class Board {
 				boardArray[i][j].draw(canvas);
 			}
 		}
-		
 	}
 	
 	public void update(float dt){

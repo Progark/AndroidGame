@@ -1,7 +1,5 @@
 package progark.pkg.game;
 
-import java.util.ArrayList;
-
 import sheep.game.Sprite;
 import sheep.game.State;
 import sheep.graphics.Image;
@@ -13,8 +11,8 @@ import android.view.MotionEvent;
 
 public class GameMechanics extends State implements TouchListener{
 //	private int scrWidth, scrHeight;
-	private boolean setup;
-	private InGameGUI Gui;
+//	private boolean setup;
+//	private InGameGUI Gui;
 	private Player player1, player2;
 	private Paint paint;
 
@@ -41,7 +39,7 @@ public class GameMechanics extends State implements TouchListener{
 	
 	public GameMechanics(StartMenuView smv) {
 		this.smv = smv;
-		setup = false;
+//		setup = false;
 		paint = new Paint();
 		paint.setColor(Color.WHITE);
 		paint.setTextSize(25);
@@ -82,7 +80,7 @@ public class GameMechanics extends State implements TouchListener{
 
 	@Override
 	public void draw(Canvas canvas) {
-		canvas.drawColor(Color.GREEN);
+		board.draw(canvas);
 		
 		if (selectedUnit != null){
 			selectedUnitSprite.draw(canvas);
@@ -92,7 +90,6 @@ public class GameMechanics extends State implements TouchListener{
 		}
 		
 		
-		board.draw(canvas);
 		
 		
 
