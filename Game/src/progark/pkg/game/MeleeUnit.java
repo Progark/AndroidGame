@@ -13,7 +13,7 @@ public class MeleeUnit extends Unit {
 				new Image(R.drawable.sh1), new Image(R.drawable.sh2));
 		
 		setPosition(x, y);
-		this.setName("M");
+		this.setName("Me"); //Endret dette fordi jeg lagde en magic-klasse. For å skille på de trengtes to bokstaver
 		this.setDefence(70);
 		this.setHealth(60);
 		this.setSkill(40);
