@@ -12,16 +12,14 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 
 public class GameMechanics extends State implements TouchListener{
-	private int scrWidth, scrHeight;
+//	private int scrWidth, scrHeight;
 	private boolean setup;
 	private InGameGUI Gui;
-	private Player player1, player2, currentPlayer;
+	private Player player1, player2;
 	private Paint paint;
 
 	private Unit selectedUnit  = null, attackedUnit = null;
 	private Sprite selectedUnitSprite, attackedSprite;
-
-	private ArrayList<ArrayList<Sprite>> sprites;
 
 	private int newPixelXPos = -100, newPixelYPos = -100;	//Dette skal v¾re verdien til ¿verste venstre hj¿rne av korrekt Square. Satt til -100 slik at det er langt utenfor skjermen
 
@@ -51,23 +49,13 @@ public class GameMechanics extends State implements TouchListener{
 
 		player1 = new Player(1);
 		player2 = new Player(2);
-//		currentPlayer = player1;
-//		movesLeft = currentPlayer.getUnits().size();
 		
-		//Bakgrunnen
-		sprites = new ArrayList<ArrayList<Sprite>>();
+		//Denne brukes for øyeblikket til å settes størrelsten på selectedUnitSprite og attackSprite
+		//Må derfor ikke slettes
 		Image image = new Image(R.drawable.tile);
 		float sx = Globals.TILE_SIZE/image.getWidth();
 		float sy = Globals.TILE_SIZE/image.getHeight();
-//		for (int i = 0; i < 9; i++) {
-//			sprites.add(new ArrayList<Sprite>());
-//			for (int j = 0; j < 7; j++) {
-//				sprites.get(i).add(new Sprite(image));
-//				sprites.get(i).get(j).setPosition(j*Globals.TILE_SIZE, i*Globals.TILE_SIZE + Globals.TILE_SIZE);	//Legge til ny avstand hvis ting funker
-//				sprites.get(i).get(j).setOffset(0,0);
-//				sprites.get(i).get(j).setScale(sx, sy);
-//			}
-//		}
+
 		
 
 		//Sprite som endrer fargen pŒ bakgrunnen til den valgte uniten
@@ -94,18 +82,8 @@ public class GameMechanics extends State implements TouchListener{
 
 	@Override
 	public void draw(Canvas canvas) {
-		scrHeight = canvas.getHeight();
-		scrWidth = canvas.getWidth();
 		canvas.drawColor(Color.GREEN);
 		
-
-		//Tegner bakken under/bak hver av unitene
-		for (ArrayList<Sprite> spriteList : sprites) {
-			for (Sprite s : spriteList) {
-				s.draw(canvas);
-			}
-		}
-
 		if (selectedUnit != null){
 			selectedUnitSprite.draw(canvas);
 		} 
@@ -114,7 +92,7 @@ public class GameMechanics extends State implements TouchListener{
 		}
 		
 		
-		
+		board.draw(canvas);
 		
 		
 
@@ -129,17 +107,18 @@ public class GameMechanics extends State implements TouchListener{
 		}
 
 		boardMenu.draw(canvas);
-		board.draw(canvas);
+	
 		
 		if (timeLeftOfAttackAnimation > 0 && displayHealthUnit != null){
 			displayHealthUnitSprite.draw(canvas);
-			canvas.drawText("Health: " + displayHealthUnit.getHealth(), scrWidth - Globals.TILE_SIZE - 150, Globals.TILE_SIZE - 50, paint);
+			canvas.drawText("Health: " + displayHealthUnit.getHealth(), Globals.canvasWidth - Globals.TILE_SIZE - 150, Globals.TILE_SIZE - 50, paint);
 		}
 		
 		if (timeLeftOfAttackAnimation > 0 && attackedUnit != null){
 			canvas.drawText("Damage: " + damageMade, Globals.TILE_SIZE + 50, Globals.TILE_SIZE - 50 , paint);
-			canvas.drawText("Health: " + attackedUnit.getHealth(), scrWidth - Globals.TILE_SIZE - 150, Globals.TILE_SIZE - 50, paint);
+			canvas.drawText("Health: " + attackedUnit.getHealth(), Globals.canvasWidth - Globals.TILE_SIZE - 150, Globals.TILE_SIZE - 50, paint);
 		}
+		
 		
 		player1.draw(canvas);
 		player2.draw(canvas);
@@ -148,12 +127,9 @@ public class GameMechanics extends State implements TouchListener{
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		for (ArrayList<Sprite> spriteList : sprites) {
-			for (Sprite s : spriteList) {
-				s.update(dt);
-			}
-		}
 
+		
+		board.update(dt);
 		//Passer pŒ at angrepsanimasjonen varer i rett tid, at man fŒr lov til Œ trykke pŒ skjermen etter at animasjon er over og at attackedSprite flyttes ut av vinduet. 
 		if (timeLeftOfAttackAnimation > 0){
 			timeLeftOfAttackAnimation -= dt;
@@ -522,12 +498,12 @@ public class GameMechanics extends State implements TouchListener{
 	 * fordi man i sheep kun kan hente skjermstørrelsen i draw og 
 	 * dermed må opprette ting etter dette. 
 	 */
-	private void setup(){
-		if (!setup) {
-			Gui = new InGameGUI(scrHeight, scrWidth);
-			setup = true;
-		}
-	}
+//	private void setup(){
+//		if (!setup) {
+//			Gui = new InGameGUI(Globals.canvasHeight, Globals.canvasWidth);
+//			setup = true;
+//		}
+//	}
 }
 
 
