@@ -5,8 +5,6 @@ import sheep.game.State;
 import sheep.graphics.Image;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.view.MotionEvent;
 
 /*
@@ -16,16 +14,15 @@ public class StartMenuView extends State {
 	private int i = 0;
 	private Image welcomeImage;
 	private Sprite welcomeSprite;
-	private float sx, sy;
+	private float sx;
 
 	public StartMenuView(){
 		welcomeImage = new Image(R.drawable.start);
-		welcomeSprite = new Sprite(welcomeImage);
+		welcomeSprite = new Sprite(new Image(R.drawable.start));
 		welcomeSprite.setOffset(0,0);
 	}
 	
-	public void setPopGameMechanics(){
-		
+	public void setPopGameMechanics(){	
 		getGame().popState();
 		getGame().popState();
 	}
@@ -44,13 +41,12 @@ public class StartMenuView extends State {
 			Globals.calculatedTileSize = Globals.canvasWidth/Globals.BOARD_WIDTH;
 			
 			sx = 1.0f*Globals.canvasWidth/welcomeImage.getWidth();
-			sy = 1.0f*Globals.canvasHeight/welcomeImage.getHeight();
-			welcomeSprite.setScale(sx, sy);
-			welcomeSprite.setPosition(Globals.canvasWidth/2, Globals.canvasHeight/2);
+			welcomeSprite.setScale(sx, sx);
+			welcomeSprite.setPosition(0, Globals.canvasHeight/4);
 			
 			i++;
 		}
-		
+		canvas.drawColor(Color.WHITE);
 		welcomeSprite.draw(canvas);
 	}
 

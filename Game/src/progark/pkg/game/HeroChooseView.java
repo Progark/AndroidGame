@@ -31,6 +31,7 @@ public class HeroChooseView extends State {
 		this.smw = smw;
 		nextButton = new TextButton(Globals.canvasWidth / 2 - 200, Globals.canvasHeight - 30, "Next");
 		nextButton.addWidgetListener(new NextEvent());
+	
 		
 		switch (player) {
 		case Globals.PLAYER_ONE:
