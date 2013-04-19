@@ -52,9 +52,15 @@ public class GameMechanics extends State implements TouchListener{
 	public void draw(Canvas canvas) {
 		board.draw(canvas);
 		boardMenu.draw(canvas);
+		
 		player1.draw(canvas);
 		player2.draw(canvas);
 
+		if (turn % 2 != 0)
+			canvas.drawText("PLayer1's turn", Globals.canvasWidth, Globals.canvasHeight, paint);
+		else
+			canvas.drawText("Player2's turn", Globals.canvasWidth, Globals.canvasHeight, paint);
+		
 		if (timeLeftOfAnimation > 0 && displayHealthUnit != null)
 			canvas.drawText("Health: " + displayHealthUnit.getHealth(), Globals.canvasWidth - Globals.TILE_SIZE - 150, Globals.TILE_SIZE - 50, paint);
 
@@ -120,7 +126,7 @@ public class GameMechanics extends State implements TouchListener{
 				if (isEmptySquare(squareYClicked, squareXClicked) && squareYClicked != 0 && squareYClicked*Globals.TILE_SIZE > Globals.TILE_SIZE){
 					//Move
 					inAction = true;
-					//					setLegalMovesSpritePosition(true);
+					setLegalMovesSpritePosition(true);
 					newPixelXPos = squareXClicked*Globals.TILE_SIZE;
 					newPixelYPos = squareYClicked*Globals.TILE_SIZE;
 					board.getTile(selectedUnit.getSquareY(), selectedUnit.getSquareX()).setTileColor(Globals.NORMAL_TILE);
@@ -133,7 +139,7 @@ public class GameMechanics extends State implements TouchListener{
 						if (!isNeighbor(squareYClicked, squareXClicked)){
 							if (selectedUnit.getName().equals("R")){
 								inAction = true;
-								//								setLegalMovesSpritePosition(true);
+								setLegalMovesSpritePosition(true);
 								timeLeftOfAnimation = Globals.ANIMATION_TIME;
 								attackedUnit = getAttackedUnit(squareYClicked, squareXClicked);
 								board.getTile(squareYClicked, squareXClicked).setTileColor(Globals.RED_TILE);
@@ -143,7 +149,7 @@ public class GameMechanics extends State implements TouchListener{
 							}
 						} else {
 							inAction = true;
-							//							setLegalMovesSpritePosition(true);
+							setLegalMovesSpritePosition(true);
 							timeLeftOfAnimation = Globals.ANIMATION_TIME;
 							attackedUnit = getAttackedUnit(squareYClicked, squareXClicked);
 							board.getTile(squareYClicked, squareXClicked).setTileColor(Globals.RED_TILE);
@@ -154,9 +160,10 @@ public class GameMechanics extends State implements TouchListener{
 					} else if (isSelectedUnit(squareYClicked, squareXClicked)){
 						//Deselct the currently selected unit
 						deselectUnit(squareYClicked, squareXClicked);
-						//						setLegalMovesSpritePosition(true);
+						setLegalMovesSpritePosition(true);
 					} else {
 						//Select the new unit
+						deselectUnit(selectedUnit.getSquareY(), selectedUnit.getSquareX());
 						selectUnit(squareYClicked, squareXClicked);
 					}
 				}
@@ -503,7 +510,7 @@ public class GameMechanics extends State implements TouchListener{
 				temp.add(new Coordinate(squareY, squareX - i - 1));
 		}
 //		temp.add(new Coordinate(3,0));
-//		temp.add(new Coordinate(3,2));
+		temp.add(new Coordinate(3,2));
 //		temp.add(new Coordinate(0,3));
 //		temp.add(new Coordinate(-2,3));
 		return temp;
