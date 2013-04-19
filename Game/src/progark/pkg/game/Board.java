@@ -56,4 +56,8 @@ public class Board {
 		return boardArray[squareY][squareX];
 	}
 	
+	public BoardTile[][] getBoard(){
+		return boardArray;
+	}
+	
 }

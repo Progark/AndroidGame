@@ -28,11 +28,11 @@ public class GameMechanics extends State implements TouchListener{
 	private String winner;
 
 	private StartMenuView smv;
-	
+
 	private BoardMenu boardMenu;
 	private Board board;
 	private ArrayList<Coordinate> legalMoves;
-	
+
 	public GameMechanics(StartMenuView smv) {
 		this.smv = smv;
 		paint = new Paint();
@@ -54,14 +54,16 @@ public class GameMechanics extends State implements TouchListener{
 		boardMenu.draw(canvas);
 		player1.draw(canvas);
 		player2.draw(canvas);
-		
+
 		if (timeLeftOfAnimation > 0 && displayHealthUnit != null)
 			canvas.drawText("Health: " + displayHealthUnit.getHealth(), Globals.canvasWidth - Globals.TILE_SIZE - 150, Globals.TILE_SIZE - 50, paint);
-		
+
 		if (timeLeftOfAnimation > 0 && attackedUnit != null){
 			canvas.drawText("Damage: " + damageMade, Globals.TILE_SIZE + 50, Globals.TILE_SIZE - 50 , paint);
 			canvas.drawText("Health: " + attackedUnit.getHealth(), Globals.canvasWidth - Globals.TILE_SIZE - 150, Globals.TILE_SIZE - 50, paint);
 		}
+		
+		canvas.drawText("LegalMovesSize:" + legalMoves.size(), 300, 500, paint);
 	}
 
 	@Override
@@ -74,20 +76,27 @@ public class GameMechanics extends State implements TouchListener{
 			timeLeftOfAnimation -= dt;
 			if (timeLeftOfAnimation <= 0){
 				timeLeftOfAnimation = 0;
-				
-				
+
+
 				if (selectedUnit != null){
 					selectedUnit.setAnimation("S");
-					deselectUnit(selectedUnit.getSquareX(), selectedUnit.getSquareY());
+					deselectUnit(selectedUnit.getSquareY(), selectedUnit.getSquareX());
 				}
-				
-				board.getTile(attackedUnit.getSquareY(), attackedUnit.getSquareX()).setTileColor(Globals.NORMAL_TILE);
-				attackedUnit = null;
-				
+				if (attackedUnit != null){
+					board.getTile(attackedUnit.getSquareY(), attackedUnit.getSquareX()).setTileColor(Globals.NORMAL_TILE);
+					attackedUnit = null;
+				} else {	//Dersom uniten døde, vil attackedUnit være null, og det vil derfor ikke være mulig å hente ut posisjon til BoardTile. Resetter derfor alle
+					for (int i = 0; i < board.getBoard().length; i++) {
+						for (int j = 0; j < board.getBoard()[i].length; j++) {
+							board.getTile(i, j).setTileColor(Globals.NORMAL_TILE);
+						}
+					}
+				}
+
 				inAction = false;
 			}
 		}
-		
+
 		if (inAction == false && movesLeft == 0)
 			switchPlayerTurn();
 
@@ -96,7 +105,7 @@ public class GameMechanics extends State implements TouchListener{
 
 		player1.update(dt);
 		player2.update(dt);
-		
+
 
 	}
 
@@ -108,10 +117,10 @@ public class GameMechanics extends State implements TouchListener{
 
 		if (!inAction){
 			if (selectedUnit != null){
-				if (isEmptySquare(squareXClicked, squareYClicked) && squareYClicked != 0){
+				if (isEmptySquare(squareYClicked, squareXClicked) && squareYClicked != 0 && squareYClicked*Globals.TILE_SIZE > Globals.TILE_SIZE){
 					//Move
 					inAction = true;
-//					setLegalMovesSpritePosition(true);
+					//					setLegalMovesSpritePosition(true);
 					newPixelXPos = squareXClicked*Globals.TILE_SIZE;
 					newPixelYPos = squareYClicked*Globals.TILE_SIZE;
 					board.getTile(selectedUnit.getSquareY(), selectedUnit.getSquareX()).setTileColor(Globals.NORMAL_TILE);
@@ -119,14 +128,14 @@ public class GameMechanics extends State implements TouchListener{
 					movesLeft --;
 
 				} else {
-					if (isOppoentSquare(squareXClicked, squareYClicked)){
+					if (isOppoentSquare(squareYClicked, squareXClicked)){
 						//Attack!
-						if (!isNeighbor(squareXClicked, squareYClicked)){
+						if (!isNeighbor(squareYClicked, squareXClicked)){
 							if (selectedUnit.getName().equals("R")){
 								inAction = true;
-//								setLegalMovesSpritePosition(true);
+								//								setLegalMovesSpritePosition(true);
 								timeLeftOfAnimation = Globals.ANIMATION_TIME;
-								attackedUnit = getAttackedUnit(squareXClicked, squareYClicked);
+								attackedUnit = getAttackedUnit(squareYClicked, squareXClicked);
 								board.getTile(squareYClicked, squareXClicked).setTileColor(Globals.RED_TILE);
 								selectedUnit.setAnimation("A");
 								doFight();
@@ -134,26 +143,26 @@ public class GameMechanics extends State implements TouchListener{
 							}
 						} else {
 							inAction = true;
-//							setLegalMovesSpritePosition(true);
+							//							setLegalMovesSpritePosition(true);
 							timeLeftOfAnimation = Globals.ANIMATION_TIME;
-							attackedUnit = getAttackedUnit(squareXClicked, squareYClicked);
+							attackedUnit = getAttackedUnit(squareYClicked, squareXClicked);
 							board.getTile(squareYClicked, squareXClicked).setTileColor(Globals.RED_TILE);
 							selectedUnit.setAnimation("A");
 							doFight();
 							movesLeft --;
 						}
-					} else if (isSelectedUnit(squareXClicked, squareYClicked)){
+					} else if (isSelectedUnit(squareYClicked, squareXClicked)){
 						//Deselct the currently selected unit
-						deselectUnit(squareXClicked, squareYClicked);
-//						setLegalMovesSpritePosition(true);
+						deselectUnit(squareYClicked, squareXClicked);
+						//						setLegalMovesSpritePosition(true);
 					} else {
 						//Select the new unit
-						selectUnit(squareXClicked, squareYClicked);
+						selectUnit(squareYClicked, squareXClicked);
 					}
 				}
 			} else {
 				//Select a unit
-				selectUnit(squareXClicked, squareYClicked);
+				selectUnit(squareYClicked, squareXClicked);
 			}
 
 		}
@@ -169,13 +178,13 @@ public class GameMechanics extends State implements TouchListener{
 	 * @param squareY - Squareverdi, ikke pikselverdi
 	 * @return
 	 */
-	public void selectUnit(int squareX, int squareY){
+	public void selectUnit(int squareY, int squareX){
 		if (turn % 2 != 0){
 			for (Unit u : player1.getUnits()) {
 				if (u.getSquareX() == squareX && u.getSquareY() == squareY){
 					selectedUnit = u;
-//					theLegalMoves();
-//					setLegalMovesSpritePosition(false);
+										theLegalMoves();
+										setLegalMovesSpritePosition(false);
 					board.getTile(squareY, squareX).setTileColor(Globals.GREEN_TILE);
 				}
 			}
@@ -183,8 +192,8 @@ public class GameMechanics extends State implements TouchListener{
 			for (Unit u : player2.getUnits()) {
 				if (u.getSquareX() == squareX && u.getSquareY() == squareY){
 					selectedUnit = u;
-//					theLegalMoves();
-//					setLegalMovesSpritePosition(false);
+										theLegalMoves();
+										setLegalMovesSpritePosition(false);
 					board.getTile(squareY, squareX).setTileColor(Globals.GREEN_TILE);
 				}
 			}
@@ -197,7 +206,7 @@ public class GameMechanics extends State implements TouchListener{
 	 * @param squareY - Squareverdi, ikke pikselverdi
 	 * @return
 	 */
-	public void deselectUnit(int squareX, int squareY){
+	public void deselectUnit(int squareY, int squareX){
 		if (squareX == selectedUnit.getSquareX() && squareY == selectedUnit.getSquareY()){
 			selectedUnit = null;
 			board.getTile(squareY, squareX).setTileColor(Globals.NORMAL_TILE);			
@@ -239,7 +248,7 @@ public class GameMechanics extends State implements TouchListener{
 		//Hvis figuren har kommet frem så skal den ikke lenger være valgt
 		if (newPixelXPos == selectedUnit.getX() && newPixelYPos == selectedUnit.getY()){
 			selectedUnit.setAnimation("S");
-			deselectUnit(selectedUnit.getSquareX(), selectedUnit.getSquareY());
+			deselectUnit(selectedUnit.getSquareY(), selectedUnit.getSquareX());
 			newPixelXPos = -100;
 			newPixelYPos = -100;
 			inAction = false;
@@ -293,7 +302,7 @@ public class GameMechanics extends State implements TouchListener{
 	 * @param squareY - Squareverdi, ikke pikselverdi
 	 * @return
 	 */
-	public boolean isEmptySquare(int squareX, int squareY){
+	public boolean isEmptySquare(int squareY, int squareX){
 		for (Unit u : player1.getUnits()) {
 			if (u.getSquareX() == squareX && u.getSquareY() == squareY)
 				return false;
@@ -311,7 +320,7 @@ public class GameMechanics extends State implements TouchListener{
 	 * @param squareY - Squareverdi, ikke pikselverdi
 	 * @return
 	 */
-	public boolean isOppoentSquare(int squareX, int squareY){
+	public boolean isOppoentSquare(int squareY, int squareX){
 		//Hvis en-player sin tur
 		if ((turn % 2) != 0){
 			for (Unit u : player2.getUnits()) {
@@ -335,7 +344,7 @@ public class GameMechanics extends State implements TouchListener{
 	 * @param squareY - Squareverdi, ikke pixelverdi
 	 * @return
 	 */
-	public boolean isSelectedUnit(int squareX, int squareY){
+	public boolean isSelectedUnit(int squareY, int squareX){
 		if (selectedUnit.getSquareX() == squareX && selectedUnit.getSquareY() == squareY)
 			return true;
 		return false;
@@ -347,7 +356,7 @@ public class GameMechanics extends State implements TouchListener{
 	 * @param squareY
 	 * @return
 	 */
-	public boolean isNeighbor(int squareX, int squareY){
+	public boolean isNeighbor(int squareY, int squareX){
 		if (Math.abs(selectedUnit.getSquareX() - squareX) < 2 && Math.abs(selectedUnit.getSquareY() - squareY) < 2)
 			return true;
 		return false;
@@ -359,7 +368,7 @@ public class GameMechanics extends State implements TouchListener{
 	 * @param squareY - Squareverdi, ikke pixelverdi
 	 * @return
 	 */
-	public Unit getAttackedUnit(int squareX, int squareY){
+	public Unit getAttackedUnit(int squareY, int squareX){
 		if ((turn % 2) != 0 ){
 			for (Unit u : player2.getUnits()) {
 				if (u.getSquareX() == squareX && u.getSquareY() == squareY)
@@ -396,8 +405,8 @@ public class GameMechanics extends State implements TouchListener{
 	public void switchPlayerTurn(){
 		//Deselecter alt som er valgt
 		if (selectedUnit != null)
-			deselectUnit(selectedUnit.getSquareX(), selectedUnit.getSquareY());
-		
+			deselectUnit(selectedUnit.getSquareY(), selectedUnit.getSquareX());
+
 		turn ++;
 		if ((turn % 2) != 0)
 			movesLeft = player1.getUnits().size();
@@ -408,20 +417,101 @@ public class GameMechanics extends State implements TouchListener{
 	public String getWinner(){
 		return winner;
 	}
-	
+
 	public StartMenuView getSMV(){
 		return smv;
 	}
-	
+
 	public Player getPlayer1(){
 		return player1;
 	}
-	
+
 	public Player getPlayer2(){
 		return player2;
 	}
-	
+
 	public int getTurn(){
 		return turn;
 	}
+
+	/**
+	 * Setter ny posisjon for legalMovesSprite. hvis variabelen er true resettes alt
+	 * @param reset
+	 */
+	public void setLegalMovesSpritePosition(boolean reset){
+		if (reset == true){
+			for (Coordinate c : legalMoves) {
+				board.getTile(c.getSquareY(), c.getSquareX()).setTileColor(Globals.NORMAL_TILE);
+			}
+		} else {
+
+			for (Coordinate c : legalMoves) {
+				board.getTile(c.getSquareY(), c.getSquareX()).setTileColor(Globals.BLUE_TILE);
+			}
+		}
+	}
+	/**
+	 * Returnerer true dersom den valgte squaren er en del av de lovlige bevegelsene
+	 * @param newSelectedSquareX
+	 * @param newSelectedSquareY
+	 * @param possibleCoordinates
+	 * @return
+	 */
+	public boolean isLegalMove(int newSelectedSquareY, int newSelectedSquareX){
+		for (Coordinate c : legalMoves) {
+			if (c.getSquareX() == newSelectedSquareX && c.getSquareY() == newSelectedSquareY)
+				return true;
+		}
+		return false;
+	}
+	/**
+	 * Setter legalMoves til Â vÊre lik de nye lovlige movene
+	 */
+	public void theLegalMoves(){
+		ArrayList<Coordinate> temp = new ArrayList<Coordinate>();
+				for (int i = 0; i < selectedUnit.getMovement() + 1; i++) {
+					int newMovement = selectedUnit.getMovement() - i;
+					temp.addAll(plussMinus(selectedUnit.getSquareX(), selectedUnit.getSquareY() - i, newMovement));
+					temp.addAll(plussMinus(selectedUnit.getSquareX(), selectedUnit.getSquareY() + i, newMovement));
+				}
+//		for (Coordinate c : temp) {
+//			if (c.getSquareX() < 0 || c.getSquareX() >= Globals.BOARD_WIDTH 
+//					|| c.getSquareY() < 1 || c.getSquareY() >= Globals.BOARD_HEIGHT)
+//				temp.remove(c);
+//		}
+		legalMoves = temp;
+	}
+	/**
+	 * *Brukes av theLegalMoves til Â finne lovlige move
+	 * @param squareX
+	 * @param squareY
+	 * @param move
+	 * @return
+	 */
+	public ArrayList<Coordinate> plussMinus(int squareX, int squareY, int move){
+		ArrayList<Coordinate> temp = new ArrayList<Coordinate>();
+		if (move == 0 && isEmptySquare(squareY, squareX)){
+			temp.add(new Coordinate(squareY, squareX));
+			return temp;
+		}
+		for (int i = 0; i < move; i++) {
+			if (isEmptySquare(squareY, squareX))
+				temp.add(new Coordinate(squareY, squareX));
+			if (isEmptySquare(squareY, squareX + i + 1))
+				temp.add(new Coordinate(squareY, squareX + i + 1));
+			if (isEmptySquare(squareY, squareX - i - 1))
+				temp.add(new Coordinate(squareY, squareX - i - 1));
+		}
+//		temp.add(new Coordinate(3,0));
+//		temp.add(new Coordinate(3,2));
+//		temp.add(new Coordinate(0,3));
+//		temp.add(new Coordinate(-2,3));
+		return temp;
+	}
+
+
+
 }
+
+
+
