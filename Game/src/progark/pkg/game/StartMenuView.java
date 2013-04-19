@@ -56,7 +56,8 @@ public class StartMenuView extends State {
 
 	@Override
 	public boolean onTouchDown(MotionEvent me){
-				getGame().pushState(new GameMechanics(this));
+		GameInitObject gio = new GameInitObject();		
+		getGame().pushState(new HeroChooseView(gio, Globals.PLAYER_ONE, this));
 		return true;
 	}
 }

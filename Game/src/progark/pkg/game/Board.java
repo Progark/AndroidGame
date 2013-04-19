@@ -1,6 +1,5 @@
 package progark.pkg.game;
 
-import sheep.game.Sprite;
 import sheep.graphics.Image;
 
 import android.graphics.Canvas;

@@ -3,6 +3,7 @@ package progark.pkg.game;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.view.MotionEvent;
 import sheep.game.State;
 import sheep.gui.TextButton;
 import sheep.gui.WidgetAction;
@@ -58,12 +59,28 @@ public class HeroChooseView extends State {
 	@Override
 	public void draw(Canvas canvas) {
 		canvas.drawColor(Color.RED);
-		canvas.drawText(playerNameLabel, 5, 5, textPaint);
+		canvas.drawText(playerNameLabel, 5, 40, textPaint);
 		textField.draw(canvas);
-		canvas.drawText(ChooseYourHeroLabel, 5, 70, textPaint);
+		canvas.drawText(ChooseYourHeroLabel, 5, 140, textPaint);
 		nextButton.draw(canvas);
 	}
 	
+	@Override
+	public boolean onTouchDown(MotionEvent me){
+		if (me.getY() > Globals.canvasHeight - 200){
+			if (textField.getNameString() != "") {
+				p.setPlayerName(textField.getNameString());
+			}
+			
+			if (popGameBoolean) {
+				getGame().pushState(new GameMechanics(smw));
+			} else {
+				getGame().pushState(new HeroChooseView(gameInitObject, Globals.PLAYER_TWO, smw));
+			}
+		}
+		return true;
+			
+	}
 	class NextEvent implements WidgetListener{
 		@Override
 		public void actionPerformed(WidgetAction action) {

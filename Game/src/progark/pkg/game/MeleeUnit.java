@@ -1,9 +1,6 @@
 package progark.pkg.game;
 
 import sheep.graphics.Image;
-import android.graphics.Matrix;
-
-
 
 //Her må det taes hensyn til at en unit kan være sterkere enn en annen, må derfor gange opp helse og angrep
 public class MeleeUnit extends Unit {
