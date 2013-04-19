@@ -6,13 +6,14 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.view.MotionEvent;
 
 public class BoardMenu {
 
-	private int  menuWidth; 
+//	private int  menuWidth; 
 	private Image hero1, hero2;
-	private Rect lifeBar1, lifeBar2, greyBar;
-	private Paint paintLTGray, paintBlack, paintRed, paintGreen;
+	private Rect lifeBar1, lifeBar2, greyBar, pauseButton, forfeitButton;
+	private Paint paintLTGray, paintBlack, paintRed, paintGreen, paintBlue;
 	private GameMechanics gm;
 	private Sprite player1, player2;
 	private float sx, sy;
@@ -20,6 +21,7 @@ public class BoardMenu {
 	public BoardMenu(GameMechanics gm){
 		paintLTGray = new Paint();
 		paintLTGray.setColor(Color.LTGRAY);
+		paintLTGray.setTextSize(25);
 		paintBlack = new Paint();
 		paintBlack.setColor(Color.BLACK);
 		paintBlack.setTextSize(18);
@@ -27,6 +29,8 @@ public class BoardMenu {
 		paintRed.setColor(Color.RED);
 		paintGreen = new Paint();
 		paintGreen.setColor(Color.GREEN);
+		paintBlue = new Paint();
+		paintBlue.setColor(Color.BLUE);
 		this.gm = gm;
 		
 		hero1 = new Image(R.drawable.playerone);
@@ -34,13 +38,15 @@ public class BoardMenu {
 		player1 = new Sprite(hero1);
 		player2 = new Sprite(hero2);
 	
-		menuWidth = Globals.canvasWidth/Globals.MENU_PARTS;		//For øyeblikket deles denne på seks
+		Globals.menuWidth = Globals.canvasWidth/Globals.MENU_PARTS;		//For øyeblikket deles denne på seks
 		
-		sx = menuWidth/hero1.getWidth();
-		sy = (Globals.TILE_SIZE - 10 )/hero1.getHeight();
+		sx = Globals.menuWidth/hero1.getWidth();
+		sy = (Globals.calculatedTileSize - 10 )/hero1.getHeight();
 		
 		
-		greyBar = new Rect(0, 0, Globals.canvasWidth, Globals.TILE_SIZE);
+		greyBar = new Rect(0, 0, Globals.canvasWidth, Globals.calculatedTileSize);
+		pauseButton = new Rect(Globals.menuWidth + 2, 0, Globals.canvasWidth/2 - 2, Globals.calculatedTileSize/2);
+		forfeitButton = new Rect(Globals.canvasWidth/2 + 2, 0, Globals.canvasWidth - Globals.menuWidth - 2, Globals.calculatedTileSize/2);
 		
 		player1.setOffset(0, 0);
 		player1.setScale(sx, sy);
@@ -48,7 +54,7 @@ public class BoardMenu {
 		
 		player2.setOffset(0, 0);
 		player2.setScale(sx, sy);
-		player2.setPosition(Globals.canvasWidth - menuWidth, 0);
+		player2.setPosition(Globals.canvasWidth - Globals.menuWidth, 0);
 		
 	}
 
@@ -56,18 +62,21 @@ public class BoardMenu {
 	
 	public void draw(Canvas canvas){
 		canvas.drawRect(greyBar, paintLTGray);
-		canvas.drawText("PAUSE", Globals.canvasWidth/2 - 25, Globals.TILE_SIZE/2 - 9, paintBlack);
+		canvas.drawRect(pauseButton, paintBlack);
+		canvas.drawText("PAUSE", Globals.menuWidth + 80, Globals.calculatedTileSize/4 + 5, paintLTGray);
+		canvas.drawRect(forfeitButton, paintBlack);
+		canvas.drawText("FORFEIT", Globals.canvasWidth/2 + Globals.menuWidth - 50, Globals.calculatedTileSize/4 + 5, paintLTGray);
 		
 		
 		player1.draw(canvas);
 		player2.draw(canvas);
 		
-		int healthPlayer1 = (int)(gm.getPlayer1().getHealth()/gm.getPlayer1().getMaxTotalHealth()*menuWidth);
-		int healthPlayer2 = (int)(gm.getPlayer2().getHealth()/gm.getPlayer2().getMaxTotalHealth()*menuWidth);
+		int healthPlayer1 = (int)(gm.getPlayer1().getHealth()/gm.getPlayer1().getMaxTotalHealth()*Globals.menuWidth);
+		int healthPlayer2 = (int)(gm.getPlayer2().getHealth()/gm.getPlayer2().getMaxTotalHealth()*Globals.menuWidth);
 	
 		
-		lifeBar1 = new Rect(0, Globals.TILE_SIZE - 10, healthPlayer1, Globals.TILE_SIZE);
-		lifeBar2 = new Rect(Globals.canvasWidth - healthPlayer2, Globals.TILE_SIZE - 10, Globals.canvasWidth, Globals.TILE_SIZE);
+		lifeBar1 = new Rect(0, Globals.calculatedTileSize - 10, healthPlayer1, Globals.calculatedTileSize);
+		lifeBar2 = new Rect(Globals.canvasWidth - healthPlayer2, Globals.calculatedTileSize - 10, Globals.canvasWidth, Globals.calculatedTileSize);
 		
 		if (gm.getPlayer1().getHealth()/gm.getPlayer1().getMaxTotalHealth() < 0.25)
 			canvas.drawRect(lifeBar1, paintRed);
@@ -84,5 +93,4 @@ public class BoardMenu {
 		player1.update(dt);
 		player2.update(dt);
 	}
-	
 }

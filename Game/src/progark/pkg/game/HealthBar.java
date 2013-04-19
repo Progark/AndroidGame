@@ -15,10 +15,10 @@ public class HealthBar {
 		unit = u;
 		
 		posX = u.getX();
-		posY = u.getY() + Globals.TILE_SIZE - 5;
+		posY = u.getY() + Globals.calculatedTileSize - 5;
 
 		
-		healthRectangle = new Rect((int)posX, (int)posY, (int)posX + Globals.TILE_SIZE, (int)posY + 5);
+		healthRectangle = new Rect((int)posX, (int)posY, (int)posX + Globals.calculatedTileSize, (int)posY + 5);
 		
 		paintRed = new Paint();
 		paintRed.setColor(Color.RED);
@@ -28,9 +28,9 @@ public class HealthBar {
 	
 	public void update(float dt){
 		posX = unit.getX();
-		posY = unit.getY() + Globals.TILE_SIZE - 5;
+		posY = unit.getY() + Globals.calculatedTileSize - 5;
 		
-		float dx = 1.0f*unit.getHealth()/unit.getMaxHealth()*Globals.TILE_SIZE;
+		float dx = 1.0f*unit.getHealth()/unit.getMaxHealth()*Globals.calculatedTileSize;
 		
 		
 		healthRectangle.set((int)posX, (int)posY, (int)posX + (int)dx, (int)posY + 5);

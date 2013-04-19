@@ -43,6 +43,7 @@ public class StartMenuView extends State {
 		if (i == 0){
 			Globals.canvasHeight = canvas.getHeight();
 			Globals.canvasWidth = canvas.getWidth();
+			Globals.calculatedTileSize = Globals.canvasWidth/Globals.BOARD_WIDTH;
 			
 			i++;
 		}
@@ -52,6 +53,8 @@ public class StartMenuView extends State {
 		canvas.drawColor(Color.RED);
 		canvas.drawRect(rect, paint);
 		canvas.drawText("Start Game", (int)Globals.canvasWidth/2 - 100, (int)Globals.canvasHeight/2 - 25, paint2);
+		
+		canvas.drawText("calculatedTileSize:" + Globals.calculatedTileSize, 100, 100, paint);
 	}
 
 	@Override

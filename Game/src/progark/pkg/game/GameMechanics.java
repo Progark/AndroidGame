@@ -57,16 +57,13 @@ public class GameMechanics extends State implements TouchListener{
 		player2.draw(canvas);
 
 		if (turn % 2 != 0)
-			canvas.drawText("PLayer1's turn", Globals.canvasWidth/2 - 80, Globals.TILE_SIZE/2 + 20, paint);
+			canvas.drawText("Player1's turn", Globals.canvasWidth/2 - 80, Globals.calculatedTileSize/2 + 28, paint);
 		else
-			canvas.drawText("Player2's turn", Globals.canvasWidth/2 - 80, Globals.TILE_SIZE/2 + 20, paint);
-
-		if (timeLeftOfAnimation > 0 && displayHealthUnit != null)
-			canvas.drawText("Health: " + displayHealthUnit.getHealth(), Globals.canvasWidth - Globals.TILE_SIZE - 150, Globals.TILE_SIZE - 50, paint);
+			canvas.drawText("Player2's turn", Globals.canvasWidth/2 - 80, Globals.calculatedTileSize/2 + 28, paint);
 
 		if (timeLeftOfAnimation > 0 && attackedUnit != null){
-			canvas.drawText("Damage: " + damageMade, Globals.TILE_SIZE + 50, Globals.TILE_SIZE - 50 , paint);
-			canvas.drawText("Health: " + attackedUnit.getHealth(), Globals.canvasWidth - Globals.TILE_SIZE - 150, Globals.TILE_SIZE - 50, paint);
+			canvas.drawText("Damage: " + damageMade, Globals.calculatedTileSize + 50, Globals.calculatedTileSize/2 + 28 , paint);
+			canvas.drawText("Health: " + attackedUnit.getHealth(), Globals.canvasWidth - Globals.calculatedTileSize - 150, Globals.calculatedTileSize/2 + 28, paint);
 		}
 	}
 
@@ -120,13 +117,26 @@ public class GameMechanics extends State implements TouchListener{
 		int squareYClicked = getSquare((int)me.getY()); //Squareposisjon til me.getY()
 
 		if (!inAction){
-			if (selectedUnit != null){
+			if (me.getY() < Globals.calculatedTileSize/2){	//Hvis trykket overst pŒ skjermen
+				if (me.getX() > Globals.menuWidth + 2 && me.getX() < Globals.canvasWidth/2 - 2)
+					getGame().pushState(new PauseMenu());
+				else if (me.getX() > Globals.canvasWidth/2 + 2 && me.getX() < Globals.canvasWidth - Globals.menuWidth - 2){
+					if (turn % 2 != 0){
+						winner = "Player2";
+						getGame().pushState(new GameOver(this));
+					}else {
+						winner = "Player1";
+						getGame().pushState(new GameOver(this));
+					}
+				}
+				
+			}else if (selectedUnit != null){
 				if (isEmptySquare(squareYClicked, squareXClicked) && squareYClicked > 0 && isLegalMove(squareYClicked, squareXClicked)){
 					//Move
 					inAction = true;
 					setLegalMovesSpritePosition(true);
-					newPixelXPos = squareXClicked*Globals.TILE_SIZE;
-					newPixelYPos = squareYClicked*Globals.TILE_SIZE;
+					newPixelXPos = squareXClicked*Globals.calculatedTileSize;
+					newPixelYPos = squareYClicked*Globals.calculatedTileSize;
 					board.getTile(selectedUnit.getSquareY(), selectedUnit.getSquareX()).setTileColor(Globals.NORMAL_TILE);
 					selectedUnit.setAnimation("W");
 					movesLeft --;
@@ -299,7 +309,7 @@ public class GameMechanics extends State implements TouchListener{
 	 * @return SquareValue
 	 */
 	public int getSquare(int pixelValue){
-		return pixelValue/Globals.TILE_SIZE;
+		return pixelValue/Globals.calculatedTileSize;
 	}
 
 	/**
@@ -501,7 +511,7 @@ public class GameMechanics extends State implements TouchListener{
 	public ArrayList<Coordinate> plussMinus(int squareX, int squareY, int move){
 		ArrayList<Coordinate> temp = new ArrayList<Coordinate>();
 
-		if (move == 0 ){
+		if (move == 0 && isEmptySquare(squareY, squareX)){
 			temp.add(new Coordinate(squareY, squareX));
 			return temp;
 		}

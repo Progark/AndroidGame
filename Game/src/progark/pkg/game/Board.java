@@ -13,8 +13,8 @@ public class Board {
 	public Board() {
 		boardTileImage = new Image(R.drawable.tile);
 		
-		sx = Globals.TILE_SIZE/boardTileImage.getWidth();
-		sy = Globals.TILE_SIZE/boardTileImage.getHeight();
+		sx = Globals.calculatedTileSize/boardTileImage.getWidth();
+		sy = Globals.calculatedTileSize/boardTileImage.getHeight();
 		
 		
 		boardArray = new BoardTile[Globals.BOARD_HEIGHT][Globals.BOARD_WIDTH];
@@ -23,7 +23,7 @@ public class Board {
 				BoardTile tempSprite = new BoardTile(new Image(R.drawable.tile));
 				tempSprite.setOffset(0, 0);
 				tempSprite.setScale(sx, sy);
-				tempSprite.setPosition(j*Globals.TILE_SIZE, i*Globals.TILE_SIZE);
+				tempSprite.setPosition(j*Globals.calculatedTileSize, i*Globals.calculatedTileSize);
 				boardArray[i][j] = tempSprite;
 			}
 		}

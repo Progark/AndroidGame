@@ -26,8 +26,8 @@ public abstract class Unit extends Sprite{
 	public Unit(Image i0, Image i1, Image i2, Image i3, Image i4, Image i5){
 		super(i0);
 		setShape(i0.getWidth(), i0.getHeight());
-		scaleX = Globals.TILE_SIZE/i0.getWidth();
-		scaleY = Globals.TILE_SIZE/i0.getWidth();
+		scaleX = Globals.calculatedTileSize/i0.getWidth();
+		scaleY = Globals.calculatedTileSize/i0.getWidth();
 		setScale(scaleX, scaleY);	
 		setOffset(0, 0);
 
@@ -44,8 +44,8 @@ public abstract class Unit extends Sprite{
 	@Override
 	public void update(float dt){
 		super.update(dt);
-		squareX = (int)(getX()/Globals.TILE_SIZE);
-		squareY = (int)(getY()/Globals.TILE_SIZE);
+		squareX = (int)(getX()/Globals.calculatedTileSize);
+		squareY = (int)(getY()/Globals.calculatedTileSize);
 		
 		
 		if (typeOfAnimation.equals("S"))
@@ -94,7 +94,7 @@ public abstract class Unit extends Sprite{
 			setOffset(0,0);
 		} else {
 			setScale(-scaleX, scaleY);
-			setOffset(-Globals.TILE_SIZE,0);
+			setOffset(-Globals.calculatedTileSize,0);
 		}
 	}
 
