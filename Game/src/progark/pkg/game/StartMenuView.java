@@ -1,6 +1,8 @@
 package progark.pkg.game;
 
+import sheep.game.Sprite;
 import sheep.game.State;
+import sheep.graphics.Image;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,20 +13,15 @@ import android.view.MotionEvent;
  * Denne får nå startet spillet, men den ser ikke spesielt pen ut. Skal få fikset på det seinere...
  */
 public class StartMenuView extends State {
-	private Rect rect;
-	private Paint paint;
-	private Paint paint2;
 	private int i = 0;
-	private boolean popGameMechanics = false;
+	private Image welcomeImage;
+	private Sprite welcomeSprite;
+	private float sx, sy;
 
 	public StartMenuView(){
-
-		paint = new Paint();
-		paint.setColor(Color.GREEN);
-		paint2 = new Paint();
-		paint2.setColor(Color.GRAY);
-		paint2.setTextSize(20);
-
+		welcomeImage = new Image(R.drawable.start);
+		welcomeSprite = new Sprite(welcomeImage);
+		welcomeSprite.setOffset(0,0);
 	}
 	
 	public void setPopGameMechanics(){
@@ -35,7 +32,8 @@ public class StartMenuView extends State {
 	
 	@Override
 	public void update(float dt){
-
+		super.update(dt);
+		welcomeSprite.update(dt);
 	}
 
 	@Override
@@ -45,16 +43,15 @@ public class StartMenuView extends State {
 			Globals.canvasWidth = canvas.getWidth();
 			Globals.calculatedTileSize = Globals.canvasWidth/Globals.BOARD_WIDTH;
 			
+			sx = 1.0f*Globals.canvasWidth/welcomeImage.getWidth();
+			sy = 1.0f*Globals.canvasHeight/welcomeImage.getHeight();
+			welcomeSprite.setScale(sx, sy);
+			welcomeSprite.setPosition(Globals.canvasWidth/2, Globals.canvasHeight/2);
+			
 			i++;
 		}
-
-		rect = new Rect((int)Globals.canvasWidth/2 - 200, (int)Globals.canvasHeight/2 - 100, (int)Globals.canvasWidth/2 + 200, (int)Globals.canvasHeight/2 + 100);
-
-		canvas.drawColor(Color.RED);
-		canvas.drawRect(rect, paint);
-		canvas.drawText("Start Game", (int)Globals.canvasWidth/2 - 100, (int)Globals.canvasHeight/2 - 25, paint2);
 		
-		canvas.drawText("calculatedTileSize:" + Globals.calculatedTileSize, 100, 100, paint);
+		welcomeSprite.draw(canvas);
 	}
 
 	@Override

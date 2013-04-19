@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 
 public class GameOver extends State{
+	
 	Paint paint, paint2;
 	String winner;
 	GameMechanics gm;

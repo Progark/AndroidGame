@@ -6,11 +6,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.view.MotionEvent;
 
 public class BoardMenu {
 
-//	private int  menuWidth; 
 	private Image hero1, hero2;
 	private Rect lifeBar1, lifeBar2, greyBar, pauseButton, forfeitButton;
 	private Paint paintLTGray, paintBlack, paintRed, paintGreen, paintBlue;

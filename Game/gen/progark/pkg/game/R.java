@@ -39,13 +39,14 @@ public final class R {
         public static final int s=0x7f02000f;
         public static final int sh1=0x7f020010;
         public static final int sh2=0x7f020011;
-        public static final int sw1=0x7f020012;
-        public static final int sw2=0x7f020013;
-        public static final int sw3=0x7f020014;
-        public static final int tile=0x7f020015;
-        public static final int tileblue=0x7f020016;
-        public static final int tilegreen=0x7f020017;
-        public static final int tilered=0x7f020018;
+        public static final int start=0x7f020012;
+        public static final int sw1=0x7f020013;
+        public static final int sw2=0x7f020014;
+        public static final int sw3=0x7f020015;
+        public static final int tile=0x7f020016;
+        public static final int tileblue=0x7f020017;
+        public static final int tilegreen=0x7f020018;
+        public static final int tilered=0x7f020019;
     }
     public static final class id {
         public static final int action_settings=0x7f080000;

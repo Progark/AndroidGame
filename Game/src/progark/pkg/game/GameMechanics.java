@@ -1,10 +1,7 @@
 package progark.pkg.game;
 
 import java.util.ArrayList;
-
-import sheep.game.Sprite;
 import sheep.game.State;
-import sheep.graphics.Image;
 import sheep.input.TouchListener;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -15,7 +12,7 @@ public class GameMechanics extends State implements TouchListener{
 	private Player player1, player2;
 	private Paint paint;
 
-	private Unit selectedUnit  = null, attackedUnit = null, displayHealthUnit = null;
+	private Unit selectedUnit  = null, attackedUnit = null;
 	private int newPixelXPos = -100, newPixelYPos = -100;	//Dette skal v¾re verdien til ¿verste venstre hj¿rne av korrekt Square. Satt til -100 slik at det er langt utenfor skjermen
 
 	private int speed = Globals.MOVING_SPEED;	//Skal flytte seg 100 piksler per sekund
