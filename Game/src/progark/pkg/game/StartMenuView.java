@@ -14,7 +14,6 @@ public class StartMenuView extends State {
 	private Rect rect;
 	private Paint paint;
 	private Paint paint2;
-	private float canvasHeight, canvasWidth;
 	private int i = 0;
 	private boolean popGameMechanics = false;
 
@@ -42,21 +41,21 @@ public class StartMenuView extends State {
 	@Override
 	public void draw(Canvas canvas){
 		if (i == 0){
-			canvasHeight = canvas.getHeight();
-			canvasWidth = canvas.getWidth();
+			Globals.canvasHeight = canvas.getHeight();
+			Globals.canvasWidth = canvas.getWidth();
+			
 			i++;
 		}
 
-		rect = new Rect((int)canvasWidth/2 - 200, (int)canvasHeight/2 - 100, (int)canvasWidth/2 + 200, (int)canvasHeight/2 + 100);
+		rect = new Rect((int)Globals.canvasWidth/2 - 200, (int)Globals.canvasHeight/2 - 100, (int)Globals.canvasWidth/2 + 200, (int)Globals.canvasHeight/2 + 100);
 
 		canvas.drawColor(Color.RED);
 		canvas.drawRect(rect, paint);
-		canvas.drawText("Start Game", (int)canvasWidth/2 - 100, (int)canvasHeight/2 - 25, paint2);
+		canvas.drawText("Start Game", (int)Globals.canvasWidth/2 - 100, (int)Globals.canvasHeight/2 - 25, paint2);
 	}
 
 	@Override
 	public boolean onTouchDown(MotionEvent me){
-		if (rect.contains((int)me.getX(), (int)me.getY()))
 				getGame().pushState(new GameMechanics(this));
 		return true;
 	}

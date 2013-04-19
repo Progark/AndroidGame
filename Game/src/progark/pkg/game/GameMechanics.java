@@ -1,5 +1,7 @@
 package progark.pkg.game;
 
+import java.util.ArrayList;
+
 import sheep.game.Sprite;
 import sheep.game.State;
 import sheep.graphics.Image;
@@ -10,25 +12,18 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 
 public class GameMechanics extends State implements TouchListener{
-//	private int scrWidth, scrHeight;
-//	private boolean setup;
-//	private InGameGUI Gui;
 	private Player player1, player2;
 	private Paint paint;
 
-	private Unit selectedUnit  = null, attackedUnit = null;
-	private Sprite selectedUnitSprite, attackedSprite;
-
+	private Unit selectedUnit  = null, attackedUnit = null, displayHealthUnit = null;
 	private int newPixelXPos = -100, newPixelYPos = -100;	//Dette skal v¾re verdien til ¿verste venstre hj¿rne av korrekt Square. Satt til -100 slik at det er langt utenfor skjermen
 
 	private int speed = Globals.MOVING_SPEED;	//Skal flytte seg 100 piksler per sekund
 	private int turn = 0, movesLeft;
 	private boolean inAction = false;	//Denne skal settes til true nŒr det skal skje en animasjon som for eksempel det Œ gŒ eller det Œ angripe
-	private boolean displayHealth = false;
-	private Unit displayHealthUnit;
-	private Sprite displayHealthUnitSprite;
+
 	//Har med animering av attack Œ gj¿re
-	private float timeLeftOfAttackAnimation = 0;
+	private float timeLeftOfAnimation = 0;	//NB! Brukes ikke når en unit skal flytte på seg, men heller når den gjør et angrep/blir angrepet/blir sett på health messig
 	private int damageMade = -1;
 	private String winner;
 
@@ -36,10 +31,10 @@ public class GameMechanics extends State implements TouchListener{
 	
 	private BoardMenu boardMenu;
 	private Board board;
+	private ArrayList<Coordinate> legalMoves;
 	
 	public GameMechanics(StartMenuView smv) {
 		this.smv = smv;
-//		setup = false;
 		paint = new Paint();
 		paint.setColor(Color.WHITE);
 		paint.setTextSize(25);
@@ -47,101 +42,48 @@ public class GameMechanics extends State implements TouchListener{
 
 		player1 = new Player(1);
 		player2 = new Player(2);
-		
-		//Denne brukes for øyeblikket til å settes størrelsten på selectedUnitSprite og attackSprite
-		//Må derfor ikke slettes
-		Image image = new Image(R.drawable.tile);
-		float sx = Globals.TILE_SIZE/image.getWidth();
-		float sy = Globals.TILE_SIZE/image.getHeight();
-
-		
-
-		//Sprite som endrer fargen pŒ bakgrunnen til den valgte uniten
-		selectedUnitSprite = new Sprite(new Image(R.drawable.tilegreen));
-		selectedUnitSprite.setOffset(0, 0);
-		selectedUnitSprite.setScale(sx, sy);
-		selectedUnitSprite.setPosition(-150, 150);
-
-		//Sprite som lyser opp Œ pŒ den som blir angrepet
-		attackedSprite = new Sprite(new Image(R.drawable.tilered));
-		attackedSprite.setOffset(0, 0);
-		attackedSprite.setScale(sx, sy);
-		attackedSprite.setPosition(-150, -150);
-		
-		//Sprite som lyser opp dersom man skal vite livet
-		displayHealthUnitSprite = new Sprite(new Image(R.drawable.tilegreen));
-		displayHealthUnitSprite.setOffset(0,0);
-		displayHealthUnitSprite.setScale(sx, sy);
-		displayHealthUnitSprite.setPosition(-150, -150);
 
 		boardMenu = new BoardMenu(this);
 		board = new Board();
+		legalMoves = new ArrayList<Coordinate>();
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
 		board.draw(canvas);
-		
-		if (selectedUnit != null){
-			selectedUnitSprite.draw(canvas);
-		} 
-		if (timeLeftOfAttackAnimation > 0 && attackedUnit != null){
-			attackedSprite.draw(canvas);
-		}
-		
-		
-		
-		
-
-		for (Unit unit : player1.getUnits()) {
-			unit.setSquareX((int)(unit.getX()/Globals.TILE_SIZE));
-			unit.setSquareY((int)(unit.getY()/Globals.TILE_SIZE));
-		}
-
-		for (Unit u : player2.getUnits()) {
-			u.setSquareX((int)(u.getX()/Globals.TILE_SIZE));
-			u.setSquareY((int)(u.getY()/Globals.TILE_SIZE));
-		}
-
 		boardMenu.draw(canvas);
-	
+		player1.draw(canvas);
+		player2.draw(canvas);
 		
-		if (timeLeftOfAttackAnimation > 0 && displayHealthUnit != null){
-			displayHealthUnitSprite.draw(canvas);
+		if (timeLeftOfAnimation > 0 && displayHealthUnit != null)
 			canvas.drawText("Health: " + displayHealthUnit.getHealth(), Globals.canvasWidth - Globals.TILE_SIZE - 150, Globals.TILE_SIZE - 50, paint);
-		}
 		
-		if (timeLeftOfAttackAnimation > 0 && attackedUnit != null){
+		if (timeLeftOfAnimation > 0 && attackedUnit != null){
 			canvas.drawText("Damage: " + damageMade, Globals.TILE_SIZE + 50, Globals.TILE_SIZE - 50 , paint);
 			canvas.drawText("Health: " + attackedUnit.getHealth(), Globals.canvasWidth - Globals.TILE_SIZE - 150, Globals.TILE_SIZE - 50, paint);
 		}
-		
-		
-		player1.draw(canvas);
-		player2.draw(canvas);
 	}
 
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-
-		
 		board.update(dt);
+		boardMenu.update(dt);
 		//Passer pŒ at angrepsanimasjonen varer i rett tid, at man fŒr lov til Œ trykke pŒ skjermen etter at animasjon er over og at attackedSprite flyttes ut av vinduet. 
-		if (timeLeftOfAttackAnimation > 0){
-			timeLeftOfAttackAnimation -= dt;
-			if (timeLeftOfAttackAnimation <= 0){
-				timeLeftOfAttackAnimation = 0;
+		if (timeLeftOfAnimation > 0){
+			timeLeftOfAnimation -= dt;
+			if (timeLeftOfAnimation <= 0){
+				timeLeftOfAnimation = 0;
 				
 				
 				if (selectedUnit != null){
 					selectedUnit.setAnimation("S");
 					deselectUnit(selectedUnit.getSquareX(), selectedUnit.getSquareY());
 				}
-				attackedSprite.setPosition(-150, -150);
+				
+				board.getTile(attackedUnit.getSquareY(), attackedUnit.getSquareX()).setTileColor(Globals.NORMAL_TILE);
 				attackedUnit = null;
-				displayHealthUnitSprite.setPosition(-150, -150);
-				displayHealthUnit = null;
+				
 				inAction = false;
 			}
 		}
@@ -152,13 +94,9 @@ public class GameMechanics extends State implements TouchListener{
 		if (newPixelXPos > -100 || newPixelYPos > -100)
 			doMove(dt);
 
-		selectedUnitSprite.update(dt);
-		attackedSprite.update(dt);
-		displayHealthUnitSprite.update(dt);
-
 		player1.update(dt);
 		player2.update(dt);
-		boardMenu.update(dt);
+		
 
 	}
 
@@ -170,12 +108,13 @@ public class GameMechanics extends State implements TouchListener{
 
 		if (!inAction){
 			if (selectedUnit != null){
-				if (isEmptySquare(squareXClicked, squareYClicked)){
+				if (isEmptySquare(squareXClicked, squareYClicked) && squareYClicked != 0){
 					//Move
 					inAction = true;
+//					setLegalMovesSpritePosition(true);
 					newPixelXPos = squareXClicked*Globals.TILE_SIZE;
 					newPixelYPos = squareYClicked*Globals.TILE_SIZE;
-					selectedUnitSprite.setPosition(-150, -150);	//Flytter ("fjerner") valgt sprite utenfor vinduet
+					board.getTile(selectedUnit.getSquareY(), selectedUnit.getSquareX()).setTileColor(Globals.NORMAL_TILE);
 					selectedUnit.setAnimation("W");
 					movesLeft --;
 
@@ -185,47 +124,36 @@ public class GameMechanics extends State implements TouchListener{
 						if (!isNeighbor(squareXClicked, squareYClicked)){
 							if (selectedUnit.getName().equals("R")){
 								inAction = true;
-								timeLeftOfAttackAnimation = Globals.ANIMATION_TIME;
+//								setLegalMovesSpritePosition(true);
+								timeLeftOfAnimation = Globals.ANIMATION_TIME;
 								attackedUnit = getAttackedUnit(squareXClicked, squareYClicked);
-								attackedSprite.setPosition(squareXClicked*Globals.TILE_SIZE, squareYClicked*Globals.TILE_SIZE);
+								board.getTile(squareYClicked, squareXClicked).setTileColor(Globals.RED_TILE);
 								selectedUnit.setAnimation("A");
 								doFight();
 								movesLeft --;
 							}
 						} else {
 							inAction = true;
-							timeLeftOfAttackAnimation = Globals.ANIMATION_TIME;
+//							setLegalMovesSpritePosition(true);
+							timeLeftOfAnimation = Globals.ANIMATION_TIME;
 							attackedUnit = getAttackedUnit(squareXClicked, squareYClicked);
-							attackedSprite.setPosition(squareXClicked*Globals.TILE_SIZE, squareYClicked*Globals.TILE_SIZE);
+							board.getTile(squareYClicked, squareXClicked).setTileColor(Globals.RED_TILE);
 							selectedUnit.setAnimation("A");
 							doFight();
 							movesLeft --;
 						}
-						//IF: ikke nabo, 
-						//IF: selectedUnit == Archer, THEN: Attak with arrow
-						//ELSE: da vet vi at det er en melee enhet
-						//IF: avstand innenfor movement, THEN: Move, THEN: Attack
-						//ELSE: attack
 					} else if (isSelectedUnit(squareXClicked, squareYClicked)){
-						//Deselct
+						//Deselct the currently selected unit
 						deselectUnit(squareXClicked, squareYClicked);
+//						setLegalMovesSpritePosition(true);
 					} else {
-						//Select
+						//Select the new unit
 						selectUnit(squareXClicked, squareYClicked);
 					}
 				}
 			} else {
-				if (isOppoentSquare(squareXClicked, squareYClicked)){
-					//Display health left of opponent
-					inAction = true;
-					displayHealthUnit = getAttackedUnit(squareXClicked, squareYClicked);
-					displayHealthUnitSprite.setPosition(squareXClicked*Globals.TILE_SIZE, squareYClicked*Globals.TILE_SIZE);
-					timeLeftOfAttackAnimation = Globals.ANIMATION_TIME;
-					
-				} else {
-				//Select
+				//Select a unit
 				selectUnit(squareXClicked, squareYClicked);
-				}
 			}
 
 		}
@@ -246,14 +174,18 @@ public class GameMechanics extends State implements TouchListener{
 			for (Unit u : player1.getUnits()) {
 				if (u.getSquareX() == squareX && u.getSquareY() == squareY){
 					selectedUnit = u;
-					selectedUnitSprite.setPosition(selectedUnit.getSquareX()*Globals.TILE_SIZE, selectedUnit.getSquareY()*Globals.TILE_SIZE);
+//					theLegalMoves();
+//					setLegalMovesSpritePosition(false);
+					board.getTile(squareY, squareX).setTileColor(Globals.GREEN_TILE);
 				}
 			}
 		} else {
 			for (Unit u : player2.getUnits()) {
 				if (u.getSquareX() == squareX && u.getSquareY() == squareY){
 					selectedUnit = u;
-					selectedUnitSprite.setPosition(selectedUnit.getSquareX()*Globals.TILE_SIZE, selectedUnit.getSquareY()*Globals.TILE_SIZE);
+//					theLegalMoves();
+//					setLegalMovesSpritePosition(false);
+					board.getTile(squareY, squareX).setTileColor(Globals.GREEN_TILE);
 				}
 			}
 		}
@@ -268,7 +200,7 @@ public class GameMechanics extends State implements TouchListener{
 	public void deselectUnit(int squareX, int squareY){
 		if (squareX == selectedUnit.getSquareX() && squareY == selectedUnit.getSquareY()){
 			selectedUnit = null;
-			selectedUnitSprite.setPosition(-150, -150);
+			board.getTile(squareY, squareX).setTileColor(Globals.NORMAL_TILE);			
 		}
 	}
 
@@ -283,11 +215,13 @@ public class GameMechanics extends State implements TouchListener{
 			if (player1.getUnits().contains(attackedUnit)){
 				Unit temp = attackedUnit;
 				attackedUnit = null;
+				player1.getIndividualHealthBars().remove(player1.getUnits().indexOf(temp));
 				player1.getUnits().remove(temp);
 				gameOver();
 			} else {
 				Unit temp = attackedUnit;
 				attackedUnit = null;
+				player2.getIndividualHealthBars().remove(player2.getUnits().indexOf(temp));
 				player2.getUnits().remove(temp);
 				gameOver();
 			}
@@ -490,31 +424,4 @@ public class GameMechanics extends State implements TouchListener{
 	public int getTurn(){
 		return turn;
 	}
-
-	/* En metod til å opprette gui'et i henhold til skjermstørrelsen
-	 * fordi man i sheep kun kan hente skjermstørrelsen i draw og 
-	 * dermed må opprette ting etter dette. 
-	 */
-//	private void setup(){
-//		if (!setup) {
-//			Gui = new InGameGUI(Globals.canvasHeight, Globals.canvasWidth);
-//			setup = true;
-//		}
-//	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

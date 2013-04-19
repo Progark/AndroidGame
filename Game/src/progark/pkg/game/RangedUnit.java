@@ -11,9 +11,10 @@ public class RangedUnit extends Unit {
 		setPosition(x, y);
 		this.setName("R");
 		this.setDefence(30);
-		this.setHealth(60);
+		this.setHealth(50);
 		this.setSkill(40);
 		this.setStrength(35);
 		this.setRange(5);
+		this.setMaxHealth(50);
 	}
 }

@@ -11,10 +11,11 @@ public class MagicUnit extends Unit{
 		setPosition(x, y);
 		this.setName("Ma"); //Endret også navnet på melee til "Me"
 		this.setDefence(55);
-		this.setHealth(60);
+		this.setHealth(45);
 		this.setSkill(40);
 		this.setStrength(40);
 		this.setRange(4);
+		this.setMaxHealth(45);
 	}
 	
 
