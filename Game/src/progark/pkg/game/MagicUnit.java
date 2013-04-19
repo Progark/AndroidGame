@@ -16,6 +16,7 @@ public class MagicUnit extends Unit{
 		this.setStrength(40);
 		this.setRange(4);
 		this.setMaxHealth(45);
+		this.setMovement(1);
 	}
 	
 

@@ -16,5 +16,6 @@ public class RangedUnit extends Unit {
 		this.setStrength(35);
 		this.setRange(5);
 		this.setMaxHealth(50);
+		this.setMovement(2);
 	}
 }

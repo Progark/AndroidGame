@@ -52,15 +52,15 @@ public class GameMechanics extends State implements TouchListener{
 	public void draw(Canvas canvas) {
 		board.draw(canvas);
 		boardMenu.draw(canvas);
-		
+
 		player1.draw(canvas);
 		player2.draw(canvas);
 
 		if (turn % 2 != 0)
-			canvas.drawText("PLayer1's turn", Globals.canvasWidth, Globals.canvasHeight, paint);
+			canvas.drawText("PLayer1's turn", Globals.canvasWidth/2 - 80, Globals.TILE_SIZE/2 + 20, paint);
 		else
-			canvas.drawText("Player2's turn", Globals.canvasWidth, Globals.canvasHeight, paint);
-		
+			canvas.drawText("Player2's turn", Globals.canvasWidth/2 - 80, Globals.TILE_SIZE/2 + 20, paint);
+
 		if (timeLeftOfAnimation > 0 && displayHealthUnit != null)
 			canvas.drawText("Health: " + displayHealthUnit.getHealth(), Globals.canvasWidth - Globals.TILE_SIZE - 150, Globals.TILE_SIZE - 50, paint);
 
@@ -68,8 +68,6 @@ public class GameMechanics extends State implements TouchListener{
 			canvas.drawText("Damage: " + damageMade, Globals.TILE_SIZE + 50, Globals.TILE_SIZE - 50 , paint);
 			canvas.drawText("Health: " + attackedUnit.getHealth(), Globals.canvasWidth - Globals.TILE_SIZE - 150, Globals.TILE_SIZE - 50, paint);
 		}
-		
-		canvas.drawText("LegalMovesSize:" + legalMoves.size(), 300, 500, paint);
 	}
 
 	@Override
@@ -123,7 +121,7 @@ public class GameMechanics extends State implements TouchListener{
 
 		if (!inAction){
 			if (selectedUnit != null){
-				if (isEmptySquare(squareYClicked, squareXClicked) && squareYClicked != 0 && squareYClicked*Globals.TILE_SIZE > Globals.TILE_SIZE){
+				if (isEmptySquare(squareYClicked, squareXClicked) && squareYClicked > 0 && isLegalMove(squareYClicked, squareXClicked)){
 					//Move
 					inAction = true;
 					setLegalMovesSpritePosition(true);
@@ -160,11 +158,11 @@ public class GameMechanics extends State implements TouchListener{
 					} else if (isSelectedUnit(squareYClicked, squareXClicked)){
 						//Deselct the currently selected unit
 						deselectUnit(squareYClicked, squareXClicked);
-						setLegalMovesSpritePosition(true);
+//						setLegalMovesSpritePosition(true);
 					} else {
 						//Select the new unit
 						deselectUnit(selectedUnit.getSquareY(), selectedUnit.getSquareX());
-						selectUnit(squareYClicked, squareXClicked);
+//						selectUnit(squareYClicked, squareXClicked);
 					}
 				}
 			} else {
@@ -190,8 +188,8 @@ public class GameMechanics extends State implements TouchListener{
 			for (Unit u : player1.getUnits()) {
 				if (u.getSquareX() == squareX && u.getSquareY() == squareY){
 					selectedUnit = u;
-										theLegalMoves();
-										setLegalMovesSpritePosition(false);
+					theLegalMoves();
+					setLegalMovesSpritePosition(false);
 					board.getTile(squareY, squareX).setTileColor(Globals.GREEN_TILE);
 				}
 			}
@@ -199,8 +197,8 @@ public class GameMechanics extends State implements TouchListener{
 			for (Unit u : player2.getUnits()) {
 				if (u.getSquareX() == squareX && u.getSquareY() == squareY){
 					selectedUnit = u;
-										theLegalMoves();
-										setLegalMovesSpritePosition(false);
+					theLegalMoves();
+					setLegalMovesSpritePosition(false);
 					board.getTile(squareY, squareX).setTileColor(Globals.GREEN_TILE);
 				}
 			}
@@ -215,6 +213,7 @@ public class GameMechanics extends State implements TouchListener{
 	 */
 	public void deselectUnit(int squareY, int squareX){
 		if (squareX == selectedUnit.getSquareX() && squareY == selectedUnit.getSquareY()){
+			setLegalMovesSpritePosition(true);
 			selectedUnit = null;
 			board.getTile(squareY, squareX).setTileColor(Globals.NORMAL_TILE);			
 		}
@@ -304,7 +303,7 @@ public class GameMechanics extends State implements TouchListener{
 	}
 
 	/**
-	 * Tar inn squareverdi x og y og returnerer true dersom det ikke er noe i input-square
+	 * Tar inn squareverdi y og x og returnerer true dersom det ikke er noe i input-square
 	 * @param squareX - Squareverdi, ikke pikselverdi
 	 * @param squareY - Squareverdi, ikke pikselverdi
 	 * @return
@@ -476,16 +475,20 @@ public class GameMechanics extends State implements TouchListener{
 	 */
 	public void theLegalMoves(){
 		ArrayList<Coordinate> temp = new ArrayList<Coordinate>();
-				for (int i = 0; i < selectedUnit.getMovement() + 1; i++) {
-					int newMovement = selectedUnit.getMovement() - i;
-					temp.addAll(plussMinus(selectedUnit.getSquareX(), selectedUnit.getSquareY() - i, newMovement));
-					temp.addAll(plussMinus(selectedUnit.getSquareX(), selectedUnit.getSquareY() + i, newMovement));
-				}
-//		for (Coordinate c : temp) {
-//			if (c.getSquareX() < 0 || c.getSquareX() >= Globals.BOARD_WIDTH 
-//					|| c.getSquareY() < 1 || c.getSquareY() >= Globals.BOARD_HEIGHT)
-//				temp.remove(c);
-//		}
+		for (int i = 0; i < selectedUnit.getMovement() + 1; i++) {
+			int newMovement = selectedUnit.getMovement() - i;
+			temp.addAll(plussMinus(selectedUnit.getSquareX(), selectedUnit.getSquareY() - i, newMovement));
+			temp.addAll(plussMinus(selectedUnit.getSquareX(), selectedUnit.getSquareY() + i, newMovement));
+		}
+
+		//Klarer tydeligvis ikke Œ bruke remove
+		for (Coordinate c : temp) {
+			if (c.getSquareY() < 1 || c.getSquareX() < 0 || c.getSquareY() > Globals.BOARD_HEIGHT - 1 || c.getSquareX() > Globals.BOARD_WIDTH - 1){
+				temp.get(temp.indexOf(c)).setSquareX(selectedUnit.getSquareX());
+				temp.get(temp.indexOf(c)).setSquareY(selectedUnit.getSquareY());
+			}
+		}
+
 		legalMoves = temp;
 	}
 	/**
@@ -497,10 +500,12 @@ public class GameMechanics extends State implements TouchListener{
 	 */
 	public ArrayList<Coordinate> plussMinus(int squareX, int squareY, int move){
 		ArrayList<Coordinate> temp = new ArrayList<Coordinate>();
-		if (move == 0 && isEmptySquare(squareY, squareX)){
+
+		if (move == 0 ){
 			temp.add(new Coordinate(squareY, squareX));
 			return temp;
 		}
+
 		for (int i = 0; i < move; i++) {
 			if (isEmptySquare(squareY, squareX))
 				temp.add(new Coordinate(squareY, squareX));
@@ -509,10 +514,8 @@ public class GameMechanics extends State implements TouchListener{
 			if (isEmptySquare(squareY, squareX - i - 1))
 				temp.add(new Coordinate(squareY, squareX - i - 1));
 		}
-//		temp.add(new Coordinate(3,0));
-		temp.add(new Coordinate(3,2));
-//		temp.add(new Coordinate(0,3));
-//		temp.add(new Coordinate(-2,3));
+
+
 		return temp;
 	}
 

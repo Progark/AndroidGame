@@ -20,5 +20,6 @@ public class MeleeUnit extends Unit {
 		this.setStrength(45);
 		this.setRange(1);
 		this.setMaxHealth(60);
+		this.setMovement(3);
 	}	
 }
