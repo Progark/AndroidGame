@@ -15,8 +15,8 @@ public class GameInitObject {
 	 * Constructor
 	 */
 	public GameInitObject() {
-		p1 = new Player(Globals.PLAYER_ONE);
-		p2 = new Player(Globals.PLAYER_TWO);
+		p1 = new Player(Globals.PLAYER_ONE, "H1");
+		p2 = new Player(Globals.PLAYER_TWO, "H2");
 	}
 	
 	public Player getP1() {

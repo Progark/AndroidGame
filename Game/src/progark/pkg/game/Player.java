@@ -11,29 +11,119 @@ public class Player {
 	private float maxTotalHealth = 0.0f;
 	private ArrayList<HealthBar> individualHealthBars;
 
-	public Player(int p){		
-		if (p == 1){
-			units = new ArrayList<Unit>();
-			individualHealthBars = new ArrayList<HealthBar>();
-			addUnits(new MeleeUnit(0,2*Globals.calculatedTileSize));
-			individualHealthBars.add(new HealthBar(units.get(0)));
-			addUnits(new MeleeUnit(0, 4*Globals.calculatedTileSize));
-			individualHealthBars.add(new HealthBar(units.get(1)));
-			addUnits(new RangedUnit(0, 6*Globals.calculatedTileSize));
-			individualHealthBars.add(new HealthBar(units.get(2)));
+//	public Player(int p){		
+//		if (p == 1){
+//			units = new ArrayList<Unit>();
+//			individualHealthBars = new ArrayList<HealthBar>();
+//			addUnits(new MeleeUnit(0,2*Globals.calculatedTileSize));
+//			individualHealthBars.add(new HealthBar(units.get(0)));
+//			addUnits(new MeleeUnit(0, 4*Globals.calculatedTileSize));
+//			individualHealthBars.add(new HealthBar(units.get(1)));
+//			addUnits(new RangedUnit(0, 6*Globals.calculatedTileSize));
+//			individualHealthBars.add(new HealthBar(units.get(2)));
+//		} else {
+//			units = new ArrayList<Unit>();
+//			individualHealthBars = new ArrayList<HealthBar>();
+//			addUnits(new MeleeUnit((Globals.BOARD_WIDTH - 1)*Globals.calculatedTileSize,2*Globals.calculatedTileSize));
+//			individualHealthBars.add(new HealthBar(units.get(0)));
+//			addUnits(new MeleeUnit((Globals.BOARD_WIDTH - 1)*Globals.calculatedTileSize, 4*Globals.calculatedTileSize));
+//			individualHealthBars.add(new HealthBar(units.get(1)));
+//			addUnits(new RangedUnit((Globals.BOARD_WIDTH - 1)*Globals.calculatedTileSize, 6*Globals.calculatedTileSize));
+//			individualHealthBars.add(new HealthBar(units.get(2)));
+//			for (Unit unit : units) {
+//				unit.flip();
+//			}
+//			
+//		}
+//		for (Unit u : units) {
+//			maxTotalHealth += u.getHealth();
+//		}
+//	}
+	
+	public Player(int t, String s){
+		if (t == 1){
+			if (s.equals("H1")){
+				units = new ArrayList<Unit>();
+				individualHealthBars = new ArrayList<HealthBar>();
+				addUnits(new MeleeUnit(0, 2*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(0)));
+				addUnits(new MagicUnit(0, 4*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(1)));
+				addUnits(new RangedUnit(0, 6*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(2)));
+			} else if (s.equals("H2")){
+				units = new ArrayList<Unit>();
+				individualHealthBars = new ArrayList<HealthBar>();
+				addUnits(new MeleeUnit(0, 2*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(0)));
+				addUnits(new RangedUnit(0, 4*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(1)));
+				addUnits(new RangedUnit(0, 6*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(2)));
+			} else if (s.equals("V")){
+				units = new ArrayList<Unit>();
+				individualHealthBars = new ArrayList<HealthBar>();
+				addUnits(new MeleeUnit(0, 2*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(0)));
+				addUnits(new MeleeUnit(0, 4*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(1)));
+				addUnits(new MeleeUnit(0, 6*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(2)));
+				addUnits(new MeleeUnit(0, 8*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(3)));
+			} else {
+				units = new ArrayList<Unit>();
+				individualHealthBars = new ArrayList<HealthBar>();
+				addUnits(new RangedUnit(0, 2*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(0)));
+				addUnits(new MagicUnit(0, 4*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(1)));
+				addUnits(new RangedUnit(0, 6*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(2)));
+			}
 		} else {
-			units = new ArrayList<Unit>();
-			individualHealthBars = new ArrayList<HealthBar>();
-			addUnits(new MeleeUnit((Globals.BOARD_WIDTH - 1)*Globals.calculatedTileSize,2*Globals.calculatedTileSize));
-			individualHealthBars.add(new HealthBar(units.get(0)));
-			addUnits(new MeleeUnit((Globals.BOARD_WIDTH - 1)*Globals.calculatedTileSize, 4*Globals.calculatedTileSize));
-			individualHealthBars.add(new HealthBar(units.get(1)));
-			addUnits(new RangedUnit((Globals.BOARD_WIDTH - 1)*Globals.calculatedTileSize, 6*Globals.calculatedTileSize));
-			individualHealthBars.add(new HealthBar(units.get(2)));
+			if (s.equals("H1")){
+				units = new ArrayList<Unit>();
+				individualHealthBars = new ArrayList<HealthBar>();
+				addUnits(new MeleeUnit((Globals.BOARD_WIDTH - 1)*Globals.calculatedTileSize, 2*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(0)));
+				addUnits(new MagicUnit((Globals.BOARD_WIDTH - 1)*Globals.calculatedTileSize, 4*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(1)));
+				addUnits(new RangedUnit((Globals.BOARD_WIDTH - 1)*Globals.calculatedTileSize, 6*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(2)));
+			} else if (s.equals("H2")){
+				units = new ArrayList<Unit>();
+				individualHealthBars = new ArrayList<HealthBar>();
+				addUnits(new MeleeUnit((Globals.BOARD_WIDTH - 1)*Globals.calculatedTileSize, 2*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(0)));
+				addUnits(new RangedUnit((Globals.BOARD_WIDTH - 1)*Globals.calculatedTileSize, 4*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(1)));
+				addUnits(new RangedUnit((Globals.BOARD_WIDTH - 1)*Globals.calculatedTileSize, 6*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(2)));
+			} else if (s.equals("V")){
+				units = new ArrayList<Unit>();
+				individualHealthBars = new ArrayList<HealthBar>();
+				addUnits(new MeleeUnit((Globals.BOARD_WIDTH - 1)*Globals.calculatedTileSize, 2*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(0)));
+				addUnits(new MeleeUnit((Globals.BOARD_WIDTH - 1)*Globals.calculatedTileSize, 4*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(1)));
+				addUnits(new MeleeUnit((Globals.BOARD_WIDTH - 1)*Globals.calculatedTileSize, 6*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(2)));
+				addUnits(new MeleeUnit((Globals.BOARD_WIDTH - 1)*Globals.calculatedTileSize, 8*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(3)));
+			} else {
+				units = new ArrayList<Unit>();
+				individualHealthBars = new ArrayList<HealthBar>();
+				addUnits(new RangedUnit((Globals.BOARD_WIDTH - 1)*Globals.calculatedTileSize, 2*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(0)));
+				addUnits(new MagicUnit((Globals.BOARD_WIDTH - 1)*Globals.calculatedTileSize, 4*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(1)));
+				addUnits(new RangedUnit((Globals.BOARD_WIDTH - 1)*Globals.calculatedTileSize, 6*Globals.calculatedTileSize));
+				individualHealthBars.add(new HealthBar(units.get(2)));
+			}
 			for (Unit unit : units) {
 				unit.flip();
 			}
-			
 		}
 		for (Unit u : units) {
 			maxTotalHealth += u.getHealth();

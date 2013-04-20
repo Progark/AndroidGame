@@ -29,16 +29,23 @@ public class GameMechanics extends State implements TouchListener{
 	private BoardMenu boardMenu;
 	private Board board;
 	private ArrayList<Coordinate> legalMoves;
+	
+	private GameInitObject gio;
 
-	public GameMechanics(StartMenuView smv) {
+	public GameMechanics(StartMenuView smv, GameInitObject gio) {
 		this.smv = smv;
+		this.gio = gio;
+		
 		paint = new Paint();
 		paint.setColor(Color.WHITE);
 		paint.setTextSize(25);
 
 
-		player1 = new Player(1);
-		player2 = new Player(2);
+//		player1 = new Player(1);
+//		player2 = new Player(2);
+		
+		player1 = gio.getP1();
+		player2 = gio.getP2();
 
 		boardMenu = new BoardMenu(this);
 		board = new Board();
@@ -526,6 +533,9 @@ public class GameMechanics extends State implements TouchListener{
 		return temp;
 	}
 
+	public GameInitObject getGameInitObject(){
+		return gio;
+	}
 
 
 }
