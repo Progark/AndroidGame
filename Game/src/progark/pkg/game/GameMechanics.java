@@ -39,10 +39,6 @@ public class GameMechanics extends State implements TouchListener{
 		paint = new Paint();
 		paint.setColor(Color.WHITE);
 		paint.setTextSize(25);
-
-
-//		player1 = new Player(1);
-//		player2 = new Player(2);
 		
 		player1 = gio.getP1();
 		player2 = gio.getP2();
@@ -67,7 +63,7 @@ public class GameMechanics extends State implements TouchListener{
 
 		if (timeLeftOfAnimation > 0 && attackedUnit != null){
 			canvas.drawText("Damage: " + damageMade, Globals.calculatedTileSize + 50, Globals.calculatedTileSize/2 + 28 , paint);
-			canvas.drawText("Health: " + attackedUnit.getHealth(), Globals.canvasWidth - Globals.calculatedTileSize - 150, Globals.calculatedTileSize/2 + 28, paint);
+			canvas.drawText("Health: " + attackedUnit.getHealth(), Globals.canvasWidth - Globals.calculatedTileSize - 180, Globals.calculatedTileSize/2 + 28, paint);
 		}
 	}
 
@@ -149,7 +145,7 @@ public class GameMechanics extends State implements TouchListener{
 					if (isOppoentSquare(squareYClicked, squareXClicked)){
 						//Attack!
 						if (!isNeighbor(squareYClicked, squareXClicked)){
-							if (selectedUnit.getName().equals("R")){
+							if (selectedUnit.getName().equals("R") || selectedUnit.getName().equals("Ma")){
 								inAction = true;
 								setLegalMovesSpritePosition(true);
 								timeLeftOfAnimation = Globals.ANIMATION_TIME;

@@ -25,6 +25,8 @@ public class StartMenuView extends State {
 	public void setPopGameMechanics(){	
 		getGame().popState();
 		getGame().popState();
+		getGame().popState();
+		getGame().popState();
 	}
 	
 	@Override
