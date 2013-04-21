@@ -41,7 +41,7 @@ public class BoardMenu {
 		} else if (gm.getPlayer1().getPlayerName().equals("Viking")) {
 			hero1 = new Image(R.drawable.viking);
 			player1 = new Sprite(hero1);
-		} else if (gm.getPlayer1().getPlayerName().equals("Princess")) {
+		} else if (gm.getPlayer1().getPlayerName().equals("Princess")){
 			hero1 = new Image(R.drawable.princess);
 			player1 = new Sprite(hero1);
 		}
@@ -60,7 +60,7 @@ public class BoardMenu {
 			player2 = new Sprite(hero2);
 		}
 		
-		Globals.menuWidth = Globals.canvasWidth/Globals.MENU_PARTS;		//For øyeblikket deles denne på seks
+		Globals.menuWidth = Globals.canvasWidth/Globals.MENU_PARTS;
 		
 		sx = Globals.menuWidth/hero1.getWidth();
 		sy = (Globals.calculatedTileSize - 10 )/hero1.getHeight();

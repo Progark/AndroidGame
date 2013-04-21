@@ -1,7 +1,10 @@
 package progark.pkg.game;
 
+
 import java.util.ArrayList;
+import sheep.game.Sprite;
 import sheep.game.State;
+import sheep.graphics.Image;
 import sheep.input.TouchListener;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -11,6 +14,10 @@ import android.view.MotionEvent;
 public class GameMechanics extends State implements TouchListener{
 	private Player player1, player2;
 	private Paint paint;
+
+	private Image arrowImage;
+	private Sprite arrowSprite;
+	private float sx,sy, newArrowX = -150, newArrowY = -150, newSpeedX = 0, newSpeedY = 0;
 
 	private Unit selectedUnit  = null, attackedUnit = null;
 	private int newPixelXPos = -100, newPixelYPos = -100;	//Dette skal v¾re verdien til ¿verste venstre hj¿rne av korrekt Square. Satt til -100 slik at det er langt utenfor skjermen
@@ -29,19 +36,26 @@ public class GameMechanics extends State implements TouchListener{
 	private BoardMenu boardMenu;
 	private Board board;
 	private ArrayList<Coordinate> legalMoves;
-	
+
 	private GameInitObject gio;
 
 	public GameMechanics(StartMenuView smv, GameInitObject gio) {
 		this.smv = smv;
 		this.gio = gio;
-		
+
 		paint = new Paint();
 		paint.setColor(Color.WHITE);
 		paint.setTextSize(25);
-		
+
 		player1 = gio.getP1();
 		player2 = gio.getP2();
+
+		arrowImage = new Image(R.drawable.arrow);
+		sx = (1.0f*Globals.calculatedTileSize)/arrowImage.getWidth();
+		sy = (1.0f*20.0f)/arrowImage.getHeight();
+		arrowSprite = new Sprite(arrowImage);
+		//		arrowSprite.setScale(sx, sy); Av en eller annen grunn klarer den ikke 
+		arrowSprite.setPosition(-150, -150);
 
 		boardMenu = new BoardMenu(this);
 		board = new Board();
@@ -55,6 +69,7 @@ public class GameMechanics extends State implements TouchListener{
 
 		player1.draw(canvas);
 		player2.draw(canvas);
+		arrowSprite.draw(canvas);
 
 		if (turn % 2 != 0)
 			canvas.drawText("Player1's turn", Globals.canvasWidth/2 - 80, Globals.calculatedTileSize/2 + 28, paint);
@@ -72,13 +87,41 @@ public class GameMechanics extends State implements TouchListener{
 		super.update(dt);
 		board.update(dt);
 		boardMenu.update(dt);
+		arrowSprite.update(dt);
 		//Passer pŒ at angrepsanimasjonen varer i rett tid, at man fŒr lov til Œ trykke pŒ skjermen etter at animasjon er over og at attackedSprite flyttes ut av vinduet. 
 		if (timeLeftOfAnimation > 0){
 			timeLeftOfAnimation -= dt;
+			if (newSpeedX < 0){
+				arrowSprite.setScale(-1, 1);
+				if (arrowSprite.getX() > newArrowX - 20)
+					arrowSprite.setPosition(arrowSprite.getX() + dt*newSpeedX, arrowSprite.getY() + dt*newSpeedY);
+				else {
+					arrowSprite.setPosition(-150, -150);
+					newArrowX = -150;
+					newArrowY = -150;
+					newSpeedX = 0;
+					newSpeedY = 0;
+				}
+			} else {
+				arrowSprite.setScale(1, 1);
+				if (arrowSprite.getX() < newArrowX + 20)
+					arrowSprite.setPosition(arrowSprite.getX() + dt*newSpeedX, arrowSprite.getY() + dt*newSpeedY);
+				else {
+					arrowSprite.setPosition(-150, -150);
+					newArrowX = -150;
+					newArrowY = -150;
+					newSpeedX = 0;
+					newSpeedY = 0;
+				}
+			}
+			
 			if (timeLeftOfAnimation <= 0){
 				timeLeftOfAnimation = 0;
-
-
+				arrowSprite.setPosition(-150, -150);
+				newArrowX = -150;
+				newArrowY = -150;
+				newSpeedX = 0;
+				newSpeedY = 0;
 				if (selectedUnit != null){
 					selectedUnit.setAnimation("S");
 					deselectUnit(selectedUnit.getSquareY(), selectedUnit.getSquareX());
@@ -97,6 +140,8 @@ public class GameMechanics extends State implements TouchListener{
 				inAction = false;
 			}
 		}
+
+		
 
 		if (inAction == false && movesLeft == 0)
 			switchPlayerTurn();
@@ -129,7 +174,7 @@ public class GameMechanics extends State implements TouchListener{
 						getGame().pushState(new GameOver(this));
 					}
 				}
-				
+
 			}else if (selectedUnit != null){
 				if (isEmptySquare(squareYClicked, squareXClicked) && squareYClicked > 0 && isLegalMove(squareYClicked, squareXClicked)){
 					//Move
@@ -153,6 +198,13 @@ public class GameMechanics extends State implements TouchListener{
 								board.getTile(squareYClicked, squareXClicked).setTileColor(Globals.RED_TILE);
 								selectedUnit.setAnimation("A");
 								doFight();
+								if (selectedUnit.getName().equals("R")){
+									arrowSprite.setPosition(selectedUnit.getX() + Globals.calculatedTileSize, selectedUnit.getY() + Globals.calculatedTileSize/2);
+									newArrowX = squareXClicked*Globals.calculatedTileSize;
+									newArrowY = squareYClicked*Globals.calculatedTileSize;
+									newSpeedX = (squareXClicked*Globals.calculatedTileSize - selectedUnit.getX());
+									newSpeedY = (squareYClicked*Globals.calculatedTileSize - selectedUnit.getY());
+								}
 								movesLeft --;
 							}
 						} else {
@@ -168,11 +220,11 @@ public class GameMechanics extends State implements TouchListener{
 					} else if (isSelectedUnit(squareYClicked, squareXClicked)){
 						//Deselct the currently selected unit
 						deselectUnit(squareYClicked, squareXClicked);
-//						setLegalMovesSpritePosition(true);
+						//						setLegalMovesSpritePosition(true);
 					} else {
 						//Select the new unit
 						deselectUnit(selectedUnit.getSquareY(), selectedUnit.getSquareX());
-//						selectUnit(squareYClicked, squareXClicked);
+						//						selectUnit(squareYClicked, squareXClicked);
 					}
 				}
 			} else {

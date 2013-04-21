@@ -11,26 +11,21 @@ import android.view.MotionEvent;
 public class HeroChooseView extends State { 
 	private GameInitObject gameInitObject;
 	private Paint textPaint, nextRectButtonPaint, selectedHeroPaint;
-	private boolean popGameBoolean;
 	private Player hero1Player, hero2Player, hero3Player, hero4Player;
-	private StartMenuView smw;
+	private StartMenuView smv;
 	private Rect nextRectButton, selectedHero;
 	private Sprite hero1, hero2, hero3, hero4;
 	private float sx, sy;
-	private String selectedHeroString = "Player1";
+	private String selectedHeroString = "";
 	private int player;
 	
-	HeroChooseView(GameInitObject gio, int player, StartMenuView smw) {
+	HeroChooseView(GameInitObject gio, int player, StartMenuView smv) {
 		gameInitObject = gio;
 		textPaint = new Paint();
 		textPaint.setColor(Color.BLACK);
 		textPaint.setTextSize(25);
-		this.smw = smw;
+		this.smv = smv;
 		this.player = player;
-		if (player == 1)
-			popGameBoolean = false;
-		else 
-			popGameBoolean = true;
 		
 		nextRectButton = new Rect(Globals.canvasWidth - Globals.calculatedTileSize*3, Globals.canvasHeight - Globals.calculatedTileSize - 50,Globals.canvasWidth - Globals.calculatedTileSize, Globals.canvasHeight - 50);
 		nextRectButtonPaint = new Paint();
@@ -43,7 +38,7 @@ public class HeroChooseView extends State {
 		hero1.setScale(sx, sy);
 		hero1.setOffset(0, 0);
 		hero1.setPosition(25, Globals.canvasHeight/4);
-		selectedHero = new Rect(20, Globals.canvasHeight/4 - 5, Globals.canvasWidth/2 - 20, Globals.canvasHeight/2 - 21	);
+		selectedHero = new Rect(-150, -150, -140, -140);
 		selectedHeroPaint = new Paint();
 		selectedHeroPaint.setColor(Color.RED);
 		
@@ -137,15 +132,12 @@ public class HeroChooseView extends State {
 			else
 				gameInitObject.setP2(hero4Player);
 		}
-			
 		
-			
-		else if (me.getY() > Globals.canvasHeight - 200){
-			if (popGameBoolean) {
-				getGame().pushState(new GameMechanics(smw, gameInitObject));
-			} else {
-				getGame().pushState(new HeroChooseView(gameInitObject, Globals.PLAYER_TWO, smw));
-			}
+		else if (me.getX() > Globals.canvasWidth - Globals.calculatedTileSize*3 && me.getY() > Globals.canvasHeight - Globals.calculatedTileSize - 50 && me.getX() < Globals.canvasWidth - Globals.calculatedTileSize && me.getY() < Globals.canvasHeight - 50){
+			if (player == 1)
+					getGame().pushState(new HeroChooseView(gameInitObject, Globals.PLAYER_TWO, smv));
+			else
+					getGame().pushState(new GameMechanics(smv, gameInitObject));
 		}
 		return true;
 			
