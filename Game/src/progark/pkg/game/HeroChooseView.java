@@ -32,8 +32,7 @@ public class HeroChooseView extends State {
 		else 
 			popGameBoolean = true;
 		
-		nextRectButton = new Rect(Globals.canvasWidth - Globals.calculatedTileSize*3, Globals.canvasHeight - Globals.calculatedTileSize - 50,
-					Globals.canvasWidth - Globals.calculatedTileSize, Globals.canvasHeight - 50);
+		nextRectButton = new Rect(Globals.canvasWidth - Globals.calculatedTileSize*3, Globals.canvasHeight - Globals.calculatedTileSize - 50,Globals.canvasWidth - Globals.calculatedTileSize, Globals.canvasHeight - 50);
 		nextRectButtonPaint = new Paint();
 		nextRectButtonPaint.setColor(Color.GRAY);
 		
@@ -49,15 +48,15 @@ public class HeroChooseView extends State {
 		selectedHeroPaint.setColor(Color.RED);
 		
 		if (player == 1){
-			hero1Player = new Player(1, "H1");
-			hero2Player = new Player(1, "H2");
-			hero3Player = new Player(1, "V");
-			hero4Player = new Player(1, "P");
+			hero1Player = new Player(1,"Hero1");
+			hero2Player = new Player(1, "Hero2");
+			hero3Player = new Player(1, "Viking");
+			hero4Player = new Player(1, "Princess");
 		} else {
-			hero1Player = new Player(2, "H1");
-			hero2Player = new Player(2, "H2");
-			hero3Player = new Player(2, "V");
-			hero4Player = new Player(2, "P");
+			hero1Player = new Player(2, "Hero1");
+			hero2Player = new Player(2, "Hero2");
+			hero3Player = new Player(2, "Viking");
+			hero4Player = new Player(2, "Princess");
 		}
 		
 		hero2 = new Sprite(Globals.PLAYER_TWO_IMAGE);

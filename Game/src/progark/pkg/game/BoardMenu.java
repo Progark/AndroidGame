@@ -31,11 +31,35 @@ public class BoardMenu {
 		paintBlue.setColor(Color.BLUE);
 		this.gm = gm;
 		
-		hero1 = new Image(R.drawable.playerone);
-		hero2 = new Image(R.drawable.playertwo);
-		player1 = new Sprite(hero1);
-		player2 = new Sprite(hero2);
-	
+		
+		if (gm.getPlayer1().getPlayerName().equals("Hero1")){
+			hero1 = new Image(R.drawable.playerone);
+			player1 = new Sprite(hero1);
+		} else if (gm.getPlayer1().getPlayerName().equals("Hero2")){
+			hero1 = new Image(R.drawable.playertwo);
+			player1 = new Sprite(hero1);
+		} else if (gm.getPlayer1().getPlayerName().equals("Viking")) {
+			hero1 = new Image(R.drawable.viking);
+			player1 = new Sprite(hero1);
+		} else if (gm.getPlayer1().getPlayerName().equals("Princess")) {
+			hero1 = new Image(R.drawable.princess);
+			player1 = new Sprite(hero1);
+		}
+		
+		if (gm.getPlayer2().getPlayerName().equals("Hero1")){
+			hero2 = new Image(R.drawable.playerone);
+			player2 = new Sprite(hero2);
+		} else if (gm.getPlayer2().getPlayerName().equals("Hero2")){
+			hero2 = new Image(R.drawable.playertwo);
+			player2 = new Sprite(hero2);
+		} else if (gm.getPlayer2().getPlayerName().equals("Viking")){
+			hero2 = new Image(R.drawable.viking);
+			player2 = new Sprite(hero2);
+		} else if (gm.getPlayer2().getPlayerName().equals("Princess")){
+			hero2 = new Image(R.drawable.princess);
+			player2 = new Sprite(hero2);
+		}
+		
 		Globals.menuWidth = Globals.canvasWidth/Globals.MENU_PARTS;		//For øyeblikket deles denne på seks
 		
 		sx = Globals.menuWidth/hero1.getWidth();
