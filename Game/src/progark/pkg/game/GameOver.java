@@ -1,46 +1,52 @@
 package progark.pkg.game;
 
+import sheep.game.Sprite;
 import sheep.game.State;
+import sheep.graphics.Image;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.view.MotionEvent;
 
 public class GameOver extends State{
-	
-	Paint paint, paint2;
-	String winner;
-	GameMechanics gm;
-	
-	public GameOver( GameMechanics gm){
+
+	private GameMechanics gm;
+	private float sx;
+	private Sprite winnerSprite;
+	private Image winnerImage;
+
+	public GameOver(GameMechanics gm){
 		this.gm = gm;
-		
-		paint = new Paint();
-		paint.setColor(Color.BLUE);
-		paint.setTextSize(50);
-		
-		
-		paint2 = new Paint();
-		paint2.setColor(Color.GRAY);
-		paint2.setTextSize(20);
-		winner = gm.getWinner();
+		if (gm.getTurn() % 2 != 0){
+			winnerImage = new Image(R.drawable.wp1);
+			sx = (1.0f*Globals.canvasWidth)/winnerImage.getWidth();
+			winnerSprite = new Sprite(winnerImage);
+			winnerSprite.setOffset(0, 0);
+			winnerSprite.setScale(sx, sx);
+			winnerSprite.setPosition(0, Globals.canvasHeight/4);
+		} else {
+			winnerImage = new Image(R.drawable.wp2);
+			sx = (1.0f*Globals.canvasWidth)/winnerImage.getWidth();
+			winnerSprite = new Sprite(winnerImage);
+			winnerSprite.setOffset(0, 0);
+			winnerSprite.setScale(sx, sx);
+			winnerSprite.setPosition(0, Globals.canvasHeight/4);
+		}
 	}
-	
+
 	@Override
 	public void draw(Canvas canvas){
-		canvas.drawColor(Color.GREEN);
-		canvas.drawText("The winner is", canvas.getWidth()/2 - 150, 300, paint);
-		canvas.drawText(winner, canvas.getWidth()/2 - 120, 380, paint);
-		canvas.drawText("To restart, touch the screen", canvas.getWidth()/2 - 150, 450, paint2);
-		 
+		canvas.drawColor(Color.WHITE);
+		winnerSprite.draw(canvas);
+
 	}
-	
+
 	@Override
 	public void update(float dt){
 		super.update(dt);
-		
+		winnerSprite.update(dt);
+
 	}
-	
+
 	@Override
 	public boolean onTouchDown(MotionEvent me){
 		gm.getSMV().setPopGameMechanics();

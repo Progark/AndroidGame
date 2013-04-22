@@ -17,7 +17,7 @@ public class GameMechanics extends State implements TouchListener{
 
 	private Image arrowImage;
 	private Sprite arrowSprite;
-	private float sx,sy, newArrowX = -150, newArrowY = -150, newSpeedX = 0, newSpeedY = 0;
+	private float newArrowX = -150, newArrowY = -150, newSpeedX = 0, newSpeedY = 0;
 
 	private Unit selectedUnit  = null, attackedUnit = null;
 	private int newPixelXPos = -100, newPixelYPos = -100;	//Dette skal v¾re verdien til ¿verste venstre hj¿rne av korrekt Square. Satt til -100 slik at det er langt utenfor skjermen
@@ -51,10 +51,7 @@ public class GameMechanics extends State implements TouchListener{
 		player2 = gio.getP2();
 
 		arrowImage = new Image(R.drawable.arrow);
-		sx = (1.0f*Globals.calculatedTileSize)/arrowImage.getWidth();
-		sy = (1.0f*20.0f)/arrowImage.getHeight();
 		arrowSprite = new Sprite(arrowImage);
-		//		arrowSprite.setScale(sx, sy); Av en eller annen grunn klarer den ikke 
 		arrowSprite.setPosition(-150, -150);
 
 		boardMenu = new BoardMenu(this);
@@ -167,10 +164,10 @@ public class GameMechanics extends State implements TouchListener{
 					getGame().pushState(new PauseMenu());
 				else if (me.getX() > Globals.canvasWidth/2 + 2 && me.getX() < Globals.canvasWidth - Globals.menuWidth - 2){
 					if (turn % 2 != 0){
-						winner = "Player2";
+						winner = "Player1";
 						getGame().pushState(new GameOver(this));
 					}else {
-						winner = "Player1";
+						winner = "Player2";
 						getGame().pushState(new GameOver(this));
 					}
 				}
@@ -584,8 +581,6 @@ public class GameMechanics extends State implements TouchListener{
 	public GameInitObject getGameInitObject(){
 		return gio;
 	}
-
-
 }
 
 

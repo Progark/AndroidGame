@@ -1,51 +1,46 @@
 package progark.pkg.game;
 
+import sheep.game.Sprite;
 import sheep.game.State;
-import android.R.color;
+import sheep.graphics.Image;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.view.MotionEvent;
 
 public class PauseMenu extends State{
 
-	private Rect rect;
-	private Paint paint1, paint2;
-	private int canvasHeight, canvasWidth;
-	private int i = 0;
-	
+	private Image pauseImage;
+	private Sprite pauseSprite;
+	private float sx;
+
 	public PauseMenu(){
-		paint1 = new Paint();
-		paint1.setColor(Color.WHITE);
-		paint2 = new Paint();
-		paint2.setColor(Color.BLACK);
-		paint2.setTextSize(35);
+		pauseImage = new Image(R.drawable.pause);
+		sx = (1.0f*Globals.canvasWidth)/pauseImage.getWidth();
+		pauseSprite = new Sprite(pauseImage);
+		pauseSprite.setOffset(0, 0);
+		pauseSprite.setScale(sx, sx);
+		pauseSprite.setPosition(0, Globals.canvasHeight/4);
 	}
-	
+
+	@Override
+	public void update(float dt){
+		super.update(dt);
+		pauseSprite.update(dt);
+	}
+
 	@Override
 	public void draw(Canvas canvas){
-		if(i == 0){
-			canvasHeight = canvas.getHeight();
-			canvasWidth = canvas.getWidth();
-			i++;
-		}
-		rect = new Rect(canvasWidth/2 - 200, canvasHeight/2 - 100, canvasWidth/2+200, canvasHeight/2 + 100);
-		canvas.drawColor(color.darker_gray);
-		canvas.drawRect(rect, paint1);
-		canvas.drawText("Resume",canvasHeight/2-100, canvasWidth/2-25, paint2);
-		canvas.drawText("You have paused the game", 20, canvasWidth/2 -25, paint1);
+		canvas.drawColor(Color.WHITE);
+		pauseSprite.draw(canvas);
 	}
-	
+
 	@Override
 	public boolean onTouchDown(MotionEvent me){
-		if(rect.contains((int)me.getX(), (int)me.getY())){
-			getGame().popState();
-		}
+		getGame().popState();
 		return true;
 	}
-	
-	
-	
-	
+
+
+
+
 }

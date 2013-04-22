@@ -83,7 +83,12 @@ public class HeroChooseView extends State {
 		canvas.drawColor(Color.WHITE);
 		
 		canvas.drawRect(selectedHero, selectedHeroPaint);
-		canvas.drawText("Selected hero: ", Globals.canvasWidth/2 - 80, 100, textPaint);
+		
+		if (player == 1)
+			canvas.drawText("Player 1, select hero: ", Globals.canvasWidth/2 - 100, 100, textPaint);
+		else
+			canvas.drawText("Player 2, select hero: ", Globals.canvasWidth/2 - 100, 100, textPaint);
+		
 		canvas.drawText(selectedHeroString, Globals.canvasWidth/2 - 40, 200, textPaint);
 		
 		hero1.draw(canvas);
