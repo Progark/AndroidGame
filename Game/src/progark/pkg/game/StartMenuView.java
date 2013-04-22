@@ -1,5 +1,6 @@
 package progark.pkg.game;
 
+import sheep.audio.Sound;
 import sheep.game.Sprite;
 import sheep.game.State;
 import sheep.graphics.Image;
@@ -15,11 +16,15 @@ public class StartMenuView extends State {
 	private Image welcomeImage;
 	private Sprite welcomeSprite;
 	private float sx;
+	private Sound sound;
 
 	public StartMenuView(){
 		welcomeImage = new Image(R.drawable.start);
 		welcomeSprite = new Sprite(new Image(R.drawable.start));
 		welcomeSprite.setOffset(0,0);
+		sound = new Sound(R.raw.apl);
+		sound.play(-1);
+//		sound.play();
 	}
 	
 	public void setPopGameMechanics(){	
