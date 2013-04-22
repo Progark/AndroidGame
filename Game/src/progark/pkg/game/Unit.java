@@ -5,10 +5,6 @@ import java.util.ArrayList;
 import sheep.game.Sprite;
 import sheep.graphics.Image;
 import sheep.graphics.SpriteView;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
 
 public abstract class Unit extends Sprite{
 	private String name;

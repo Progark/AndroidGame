@@ -35,8 +35,8 @@ public class GameMechanics extends State implements TouchListener{
 
 	private StartMenuView smv;
 
-	private BoardMenu boardMenu;
-	private Board board;
+	private BoardMenuView boardMenu;
+	private BoardView board;
 	private ArrayList<Coordinate> legalMoves;
 
 	private GameInitObject gio;
@@ -56,8 +56,8 @@ public class GameMechanics extends State implements TouchListener{
 		arrowSprite = new Sprite(arrowImage);
 		arrowSprite.setPosition(-150, -150);
 
-		boardMenu = new BoardMenu(this);
-		board = new Board();
+		boardMenu = new BoardMenuView(this);
+		board = new BoardView();
 		legalMoves = new ArrayList<Coordinate>();
 	}
 
@@ -163,14 +163,14 @@ public class GameMechanics extends State implements TouchListener{
 		if (!inAction){
 			if (me.getY() < Globals.calculatedTileSize/2){	//Hvis trykket overst pŒ skjermen
 				if (me.getX() > Globals.menuWidth + 2 && me.getX() < Globals.canvasWidth/2 - 2)
-					getGame().pushState(new PauseMenu());
+					getGame().pushState(new PauseMenuView());
 				else if (me.getX() > Globals.canvasWidth/2 + 2 && me.getX() < Globals.canvasWidth - Globals.menuWidth - 2){
 					if (turn % 2 != 0){
 						winner = "Player1";
-						getGame().pushState(new GameOver(this));
+						getGame().pushState(new GameOverView(this));
 					}else {
 						winner = "Player2";
-						getGame().pushState(new GameOver(this));
+						getGame().pushState(new GameOverView(this));
 					}
 				}
 
@@ -477,10 +477,10 @@ public class GameMechanics extends State implements TouchListener{
 	public void gameOver(){
 		if (player1.getHealth() == 0){
 			winner = "Player 2";
-			getGame().pushState(new GameOver(this));
+			getGame().pushState(new GameOverView(this));
 		}else if (player2.getHealth() == 0){
 			winner = "Player 1";
-			getGame().pushState(new GameOver(this));
+			getGame().pushState(new GameOverView(this));
 		}
 	}
 

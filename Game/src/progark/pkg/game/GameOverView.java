@@ -8,14 +8,14 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.view.MotionEvent;
 
-public class GameOver extends State{
+public class GameOverView extends State{
 
 	private GameMechanics gm;
 	private float sx;
 	private Sprite winnerSprite;
 	private Image winnerImage;
 
-	public GameOver(GameMechanics gm){
+	public GameOverView(GameMechanics gm){
 		this.gm = gm;
 		if (gm.getTurn() % 2 != 0){
 			winnerImage = new Image(R.drawable.wp1);

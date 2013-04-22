@@ -4,12 +4,12 @@ import sheep.graphics.Image;
 
 import android.graphics.Canvas;
 
-public class Board {
+public class BoardView {
 	private Image boardTileImage;
 	private BoardTile[][] boardArray;
 	float sx, sy;
 
-	public Board() {
+	public BoardView() {
 		boardTileImage = new Image(R.drawable.tile);
 		
 		sx = Globals.calculatedTileSize/boardTileImage.getWidth();

@@ -7,13 +7,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.view.MotionEvent;
 
-public class PauseMenu extends State{
+public class PauseMenuView extends State{
 
 	private Image pauseImage;
 	private Sprite pauseSprite;
 	private float sx;
 
-	public PauseMenu(){
+	public PauseMenuView(){
 		pauseImage = new Image(R.drawable.pause);
 		sx = (1.0f*Globals.canvasWidth)/pauseImage.getWidth();
 		pauseSprite = new Sprite(pauseImage);

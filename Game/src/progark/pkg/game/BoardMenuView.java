@@ -7,7 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-public class BoardMenu {
+public class BoardMenuView {
 
 	private Image hero1, hero2;
 	private Rect lifeBar1, lifeBar2, greyBar, pauseButton, forfeitButton;
@@ -16,7 +16,7 @@ public class BoardMenu {
 	private Sprite player1, player2;
 	private float sx, sy;
 	
-	public BoardMenu(GameMechanics gm){
+	public BoardMenuView(GameMechanics gm){
 		paintLTGray = new Paint();
 		paintLTGray.setColor(Color.LTGRAY);
 		paintLTGray.setTextSize(25);
