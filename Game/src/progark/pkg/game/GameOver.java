@@ -1,5 +1,6 @@
 package progark.pkg.game;
 
+import sheep.audio.Sound;
 import sheep.game.Sprite;
 import sheep.game.State;
 import sheep.graphics.Image;
@@ -31,6 +32,9 @@ public class GameOver extends State{
 			winnerSprite.setScale(sx, sx);
 			winnerSprite.setPosition(0, Globals.canvasHeight/4);
 		}
+		
+		Sound sound = new Sound(R.raw.winning);
+		sound.play();
 	}
 
 	@Override

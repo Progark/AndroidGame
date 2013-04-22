@@ -190,6 +190,13 @@ public class GameMechanics extends State implements TouchListener{
 						//Attack!
 						if (!isNeighbor(squareYClicked, squareXClicked)){
 							if (selectedUnit.getName().equals("R") || selectedUnit.getName().equals("Ma")){
+								if (selectedUnit.getName().equals("Ma")){
+									Sound sound = new Sound(R.raw.magic);
+									sound.play();
+								} else {
+									Sound sound = new Sound(R.raw.arrow);
+									sound.play();
+								}
 								inAction = true;
 								setLegalMovesSpritePosition(true);
 								timeLeftOfAnimation = Globals.ANIMATION_TIME;
@@ -207,8 +214,13 @@ public class GameMechanics extends State implements TouchListener{
 								movesLeft --;
 							}
 						} else {
-							Sound swordSound = new Sound(R.raw.sword);
-							swordSound.play();
+							if (selectedUnit.getName().equals("Ma")){
+								Sound sound = new Sound(R.raw.arrow);
+								sound.play();
+							} else {
+								Sound swordSound = new Sound(R.raw.sword);
+								swordSound.play();								
+							}
 							inAction = true;
 							setLegalMovesSpritePosition(true);
 							timeLeftOfAnimation = Globals.ANIMATION_TIME;
