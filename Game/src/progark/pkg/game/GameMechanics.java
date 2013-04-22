@@ -2,6 +2,8 @@ package progark.pkg.game;
 
 
 import java.util.ArrayList;
+
+import sheep.audio.Sound;
 import sheep.game.Sprite;
 import sheep.game.State;
 import sheep.graphics.Image;
@@ -205,6 +207,8 @@ public class GameMechanics extends State implements TouchListener{
 								movesLeft --;
 							}
 						} else {
+							Sound swordSound = new Sound(R.raw.sword);
+							swordSound.play();
 							inAction = true;
 							setLegalMovesSpritePosition(true);
 							timeLeftOfAnimation = Globals.ANIMATION_TIME;
@@ -284,15 +288,19 @@ public class GameMechanics extends State implements TouchListener{
 	public void doFight(){
 		damageMade = (int)(selectedUnit.getStrength()*Math.random());
 		attackedUnit.setHealth(attackedUnit.getHealth() - damageMade);
-
+		
 		if (attackedUnit.getHealth() < 1){
 			if (player1.getUnits().contains(attackedUnit)){
+				Sound deathSound = new Sound(R.raw.death);
+				deathSound.play();
 				Unit temp = attackedUnit;
 				attackedUnit = null;
 				player1.getIndividualHealthBars().remove(player1.getUnits().indexOf(temp));
-				player1.getUnits().remove(temp);
+				player1.getUnits().remove(temp);			
 				gameOver();
 			} else {
+				Sound deathSound = new Sound(R.raw.death);
+				deathSound.play();
 				Unit temp = attackedUnit;
 				attackedUnit = null;
 				player2.getIndividualHealthBars().remove(player2.getUnits().indexOf(temp));

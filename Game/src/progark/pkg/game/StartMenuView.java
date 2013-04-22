@@ -22,7 +22,7 @@ public class StartMenuView extends State {
 		welcomeImage = new Image(R.drawable.start);
 		welcomeSprite = new Sprite(new Image(R.drawable.start));
 		welcomeSprite.setOffset(0,0);
-		sound = new Sound(R.raw.apl);
+		sound = new Sound(R.raw.bongos);
 		sound.play(-1);
 //		sound.play();
 	}
