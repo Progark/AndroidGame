@@ -93,7 +93,7 @@ public class GameMechanics extends State implements TouchListener{
 			timeLeftOfAnimation -= dt;
 			if (newSpeedX < 0){
 				arrowSprite.setScale(-1, 1);
-				if (arrowSprite.getX() > newArrowX - 20)
+				if (arrowSprite.getX() > newArrowX + 2*Globals.calculatedTileSize)
 					arrowSprite.setPosition(arrowSprite.getX() + dt*newSpeedX, arrowSprite.getY() + dt*newSpeedY);
 				else {
 					arrowSprite.setPosition(-150, -150);
@@ -104,7 +104,7 @@ public class GameMechanics extends State implements TouchListener{
 				}
 			} else {
 				arrowSprite.setScale(1, 1);
-				if (arrowSprite.getX() < newArrowX + 20)
+				if (arrowSprite.getX() < newArrowX)
 					arrowSprite.setPosition(arrowSprite.getX() + dt*newSpeedX, arrowSprite.getY() + dt*newSpeedY);
 				else {
 					arrowSprite.setPosition(-150, -150);
