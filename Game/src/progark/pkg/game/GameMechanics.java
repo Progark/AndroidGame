@@ -215,7 +215,7 @@ public class GameMechanics extends State implements TouchListener{
 							}
 						} else {
 							if (selectedUnit.getName().equals("Ma")){
-								Sound sound = new Sound(R.raw.arrow);
+								Sound sound = new Sound(R.raw.magic);
 								sound.play();
 							} else {
 								Sound swordSound = new Sound(R.raw.sword);
