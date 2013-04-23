@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
     @Override
     public void onResume(){
     	super.onResume();
-    	GameMusic.playBackgroundMusic();
+//    	GameMusic.playBackgroundMusic();
     }
     @Override
     public void onStop(){
