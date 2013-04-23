@@ -29,17 +29,27 @@ public class MainActivity extends Activity {
     
     @Override
     public void onPause(){
-    	super.onPause();
     	GameMusic.stopBakcgroundMusic();
+    	for (int i = 0; i < 5; i++) {
+			try {
+				game.popState();
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
     	game = null;
-    	setContentView(R.layout.activity_main);
-    	
+    	finish();
+    	super.onPause();
     }
     
     @Override
     public void onResume(){
     	super.onResume();
     	GameMusic.playBackgroundMusic();
+    }
+    @Override
+    public void onStop(){
+    	super.onStop();
     }
     
 }

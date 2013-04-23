@@ -56,6 +56,7 @@ public class GameOverView extends State{
 
 	@Override
 	public boolean onTouchDown(MotionEvent me){
+		gameMusic.playBackgroundMusic();
 		gm.getSMV().setPopGameMechanics();
 		return true;
 	}

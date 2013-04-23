@@ -22,6 +22,7 @@ public class PauseMenuView extends State{
 		pauseSprite.setScale(sx, sx);
 		pauseSprite.setPosition(0, Globals.canvasHeight/4);
 		this.gameMusic = gameMusic;
+		gameMusic.stopBakcgroundMusic();
 	}
 
 	@Override
@@ -38,6 +39,7 @@ public class PauseMenuView extends State{
 
 	@Override
 	public boolean onTouchDown(MotionEvent me){
+		gameMusic.playBackgroundMusic();
 		getGame().popState();
 		return true;
 	}
