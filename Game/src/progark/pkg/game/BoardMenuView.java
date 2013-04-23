@@ -15,6 +15,7 @@ public class BoardMenuView {
 	private GameMechanics gm;
 	private Sprite player1, player2;
 	private float sx, sy;
+	private static BoardMenuView instance = null;
 	
 	public BoardMenuView(GameMechanics gm){
 		paintLTGray = new Paint();

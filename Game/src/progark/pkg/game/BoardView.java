@@ -1,15 +1,15 @@
 package progark.pkg.game;
 
 import sheep.graphics.Image;
-
 import android.graphics.Canvas;
 
 public class BoardView {
 	private Image boardTileImage;
 	private BoardTile[][] boardArray;
-	float sx, sy;
+	private float sx, sy;
+	private static BoardView instance = null;
 
-	public BoardView() {
+	private BoardView() {
 		boardTileImage = new Image(R.drawable.tile);
 		
 		sx = Globals.calculatedTileSize/boardTileImage.getWidth();
@@ -28,6 +28,17 @@ public class BoardView {
 		}
 	}
 	
+	public static BoardView getInstance(){
+		if(instance == null){
+			synchronized(BoardView.class){
+				if(instance == null)
+					instance = new BoardView();
+			}
+		}
+		return instance;
+	}
+
+
 	public void draw(Canvas canvas){
 		
 		for (int i = 0; i < boardArray.length; i++) {

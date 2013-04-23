@@ -19,7 +19,8 @@ public class HeroChooseView extends State {
 	private String selectedHeroString = "";
 	private int player;
 	private GameMusic gameMusic;
-	HeroChooseView(GameInitObject gio, int player, StartMenuView smv, GameMusic gameMusic) {
+	
+	public HeroChooseView(GameInitObject gio, int player, StartMenuView smv, GameMusic gameMusic) {
 		gameInitObject = gio;
 		textPaint = new Paint();
 		textPaint.setColor(Color.BLACK);

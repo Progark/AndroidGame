@@ -14,7 +14,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         game = new Game(this, null);
-        game.pushState(new StartMenuView());
+        game.pushState(StartMenuView.getInstance());
         setContentView(game);
         
     }

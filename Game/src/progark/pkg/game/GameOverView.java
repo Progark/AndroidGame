@@ -15,6 +15,8 @@ public class GameOverView extends State{
 	private Sprite winnerSprite;
 	private Image winnerImage;
 	private GameMusic gameMusic;
+	private static GameOverView instance = null;
+	
 	public GameOverView(GameMechanics gm, GameMusic gameMusic){
 		this.gm = gm;
 		this.gameMusic = gameMusic;

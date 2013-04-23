@@ -18,15 +18,26 @@ public class StartMenuView extends State {
 	private float sx;
 //	private Sound sound;
 	private GameMusic gameMusic;
+	private static StartMenuView instance = null;
 
-	public StartMenuView(){
+	private StartMenuView(){
 		welcomeImage = new Image(R.drawable.start);
 		welcomeSprite = new Sprite(new Image(R.drawable.start));
 		welcomeSprite.setOffset(0,0);
 //		sound = new Sound(R.raw.bongos);
 //		Globals.backgroundMusic.play(-1);
-		gameMusic = new GameMusic();
+		gameMusic = GameMusic.getInstance();
 		gameMusic.playBackgroundMusic();
+	}
+	
+	public static StartMenuView getInstance(){
+		if(instance == null){
+			synchronized(PauseMenuView.class){
+				if(instance == null)
+					instance = new StartMenuView();
+			}
+		}
+		return instance;
 	}
 	
 	public void setPopGameMechanics(){	

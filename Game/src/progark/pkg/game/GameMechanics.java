@@ -41,6 +41,7 @@ public class GameMechanics extends State implements TouchListener{
 
 	private GameInitObject gio;
 	private GameMusic gameMusic;
+	private static GameMechanics instance = null;
 
 	public GameMechanics(StartMenuView smv, GameInitObject gio, GameMusic gameMusic) {
 		this.smv = smv;
@@ -58,10 +59,12 @@ public class GameMechanics extends State implements TouchListener{
 		arrowSprite.setPosition(-150, -150);
 
 		boardMenu = new BoardMenuView(this);
-		board = new BoardView();
+		board = BoardView.getInstance();
 		legalMoves = new ArrayList<Coordinate>();
 		this.gameMusic = gameMusic;
 	}
+
+
 
 	@Override
 	public void draw(Canvas canvas) {
@@ -165,7 +168,7 @@ public class GameMechanics extends State implements TouchListener{
 		if (!inAction){
 			if (me.getY() < Globals.calculatedTileSize/2){	//Hvis trykket overst pŒ skjermen
 				if (me.getX() > Globals.menuWidth + 2 && me.getX() < Globals.canvasWidth/2 - 2)
-					getGame().pushState(new PauseMenuView(gameMusic));
+					getGame().pushState(PauseMenuView.getInstance(gameMusic));
 				else if (me.getX() > Globals.canvasWidth/2 + 2 && me.getX() < Globals.canvasWidth - Globals.menuWidth - 2){
 					if (turn % 2 != 0){
 						winner = "Player1";

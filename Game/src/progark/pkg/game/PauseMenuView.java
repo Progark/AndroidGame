@@ -13,8 +13,9 @@ public class PauseMenuView extends State{
 	private Sprite pauseSprite;
 	private float sx;
 	private GameMusic gameMusic;
+	private static PauseMenuView instance = null;
 	
-	public PauseMenuView(GameMusic gameMusic){
+	private PauseMenuView(GameMusic gameMusic){
 		pauseImage = new Image(R.drawable.pause);
 		sx = (1.0f*Globals.canvasWidth)/pauseImage.getWidth();
 		pauseSprite = new Sprite(pauseImage);
@@ -23,6 +24,16 @@ public class PauseMenuView extends State{
 		pauseSprite.setPosition(0, Globals.canvasHeight/4);
 		this.gameMusic = gameMusic;
 		gameMusic.stopBakcgroundMusic();
+	}
+	
+	public static PauseMenuView getInstance(GameMusic gameMusic){
+		if(instance == null){
+			synchronized(PauseMenuView.class){
+				if(instance == null)
+					instance = new PauseMenuView(gameMusic);
+			}
+		}
+		return instance;
 	}
 
 	@Override
