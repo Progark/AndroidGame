@@ -14,9 +14,10 @@ public class GameOverView extends State{
 	private float sx;
 	private Sprite winnerSprite;
 	private Image winnerImage;
-
-	public GameOverView(GameMechanics gm){
+	private GameMusic gameMusic;
+	public GameOverView(GameMechanics gm, GameMusic gameMusic){
 		this.gm = gm;
+		this.gameMusic = gameMusic;
 		if (gm.getTurn() % 2 != 0){
 			winnerImage = new Image(R.drawable.wp1);
 			sx = (1.0f*Globals.canvasWidth)/winnerImage.getWidth();
@@ -35,6 +36,8 @@ public class GameOverView extends State{
 		
 		Sound sound = new Sound(R.raw.winning);
 		sound.play();
+//		Globals.backgroundMusic.stop();
+		gameMusic.stopBakcgroundMusic();
 	}
 
 	@Override

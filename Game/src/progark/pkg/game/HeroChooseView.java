@@ -18,14 +18,15 @@ public class HeroChooseView extends State {
 	private float sx, sy;
 	private String selectedHeroString = "";
 	private int player;
-	
-	HeroChooseView(GameInitObject gio, int player, StartMenuView smv) {
+	private GameMusic gameMusic;
+	HeroChooseView(GameInitObject gio, int player, StartMenuView smv, GameMusic gameMusic) {
 		gameInitObject = gio;
 		textPaint = new Paint();
 		textPaint.setColor(Color.BLACK);
 		textPaint.setTextSize(25);
 		this.smv = smv;
 		this.player = player;
+		this.gameMusic = gameMusic;
 		
 		nextRectButton = new Rect(Globals.canvasWidth - Globals.calculatedTileSize*3, Globals.canvasHeight - Globals.calculatedTileSize - 50,Globals.canvasWidth - Globals.calculatedTileSize, Globals.canvasHeight - 50);
 		nextRectButtonPaint = new Paint();
@@ -85,9 +86,9 @@ public class HeroChooseView extends State {
 		canvas.drawRect(selectedHero, selectedHeroPaint);
 		
 		if (player == 1)
-			canvas.drawText("Player 1, select hero: ", Globals.canvasWidth/2 - 100, 100, textPaint);
+			canvas.drawText("Player 1, select commander: ", Globals.canvasWidth/2 - 100, 100, textPaint);
 		else
-			canvas.drawText("Player 2, select hero: ", Globals.canvasWidth/2 - 100, 100, textPaint);
+			canvas.drawText("Player 2, select commander: ", Globals.canvasWidth/2 - 100, 100, textPaint);
 		
 		canvas.drawText(selectedHeroString, Globals.canvasWidth/2 - 40, 200, textPaint);
 		
@@ -140,9 +141,9 @@ public class HeroChooseView extends State {
 		
 		else if (me.getX() > Globals.canvasWidth - Globals.calculatedTileSize*3 && me.getY() > Globals.canvasHeight - Globals.calculatedTileSize - 50 && me.getX() < Globals.canvasWidth - Globals.calculatedTileSize && me.getY() < Globals.canvasHeight - 50){
 			if (player == 1)
-					getGame().pushState(new HeroChooseView(gameInitObject, Globals.PLAYER_TWO, smv));
+					getGame().pushState(new HeroChooseView(gameInitObject, Globals.PLAYER_TWO, smv, gameMusic));
 			else
-					getGame().pushState(new GameMechanics(smv, gameInitObject));
+					getGame().pushState(new GameMechanics(smv, gameInitObject, gameMusic));
 		}
 		return true;
 			

@@ -12,14 +12,16 @@ public class PauseMenuView extends State{
 	private Image pauseImage;
 	private Sprite pauseSprite;
 	private float sx;
-
-	public PauseMenuView(){
+	private GameMusic gameMusic;
+	
+	public PauseMenuView(GameMusic gameMusic){
 		pauseImage = new Image(R.drawable.pause);
 		sx = (1.0f*Globals.canvasWidth)/pauseImage.getWidth();
 		pauseSprite = new Sprite(pauseImage);
 		pauseSprite.setOffset(0, 0);
 		pauseSprite.setScale(sx, sx);
 		pauseSprite.setPosition(0, Globals.canvasHeight/4);
+		this.gameMusic = gameMusic;
 	}
 
 	@Override

@@ -40,8 +40,9 @@ public class GameMechanics extends State implements TouchListener{
 	private ArrayList<Coordinate> legalMoves;
 
 	private GameInitObject gio;
+	private GameMusic gameMusic;
 
-	public GameMechanics(StartMenuView smv, GameInitObject gio) {
+	public GameMechanics(StartMenuView smv, GameInitObject gio, GameMusic gameMusic) {
 		this.smv = smv;
 		this.gio = gio;
 
@@ -59,6 +60,7 @@ public class GameMechanics extends State implements TouchListener{
 		boardMenu = new BoardMenuView(this);
 		board = new BoardView();
 		legalMoves = new ArrayList<Coordinate>();
+		this.gameMusic = gameMusic;
 	}
 
 	@Override
@@ -163,14 +165,14 @@ public class GameMechanics extends State implements TouchListener{
 		if (!inAction){
 			if (me.getY() < Globals.calculatedTileSize/2){	//Hvis trykket overst pŒ skjermen
 				if (me.getX() > Globals.menuWidth + 2 && me.getX() < Globals.canvasWidth/2 - 2)
-					getGame().pushState(new PauseMenuView());
+					getGame().pushState(new PauseMenuView(gameMusic));
 				else if (me.getX() > Globals.canvasWidth/2 + 2 && me.getX() < Globals.canvasWidth - Globals.menuWidth - 2){
 					if (turn % 2 != 0){
 						winner = "Player1";
-						getGame().pushState(new GameOverView(this));
+						getGame().pushState(new GameOverView(this, gameMusic));
 					}else {
 						winner = "Player2";
-						getGame().pushState(new GameOverView(this));
+						getGame().pushState(new GameOverView(this, gameMusic));
 					}
 				}
 
@@ -477,10 +479,10 @@ public class GameMechanics extends State implements TouchListener{
 	public void gameOver(){
 		if (player1.getHealth() == 0){
 			winner = "Player 2";
-			getGame().pushState(new GameOverView(this));
+			getGame().pushState(new GameOverView(this, gameMusic));
 		}else if (player2.getHealth() == 0){
 			winner = "Player 1";
-			getGame().pushState(new GameOverView(this));
+			getGame().pushState(new GameOverView(this, gameMusic));
 		}
 	}
 

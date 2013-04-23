@@ -1,5 +1,6 @@
 package progark.pkg.game;
 
+import sheep.audio.Sound;
 import sheep.graphics.Image;
 
 public class Globals {
@@ -16,6 +17,7 @@ public class Globals {
 	public static final Image PRINCESS = new Image(R.drawable.princess);
 	public static final Image PLAYER_ONE_IMAGE = new Image(R.drawable.playerone);
 	public static final Image PLAYER_TWO_IMAGE = new Image(R.drawable.playertwo);
+	public static final Sound backgroundMusic = new Sound(R.raw.bongos);
 	
 	
 	public static int canvasHeight, canvasWidth;

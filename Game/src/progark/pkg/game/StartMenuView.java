@@ -16,15 +16,17 @@ public class StartMenuView extends State {
 	private Image welcomeImage;
 	private Sprite welcomeSprite;
 	private float sx;
-	private Sound sound;
+//	private Sound sound;
+	private GameMusic gameMusic;
 
 	public StartMenuView(){
 		welcomeImage = new Image(R.drawable.start);
 		welcomeSprite = new Sprite(new Image(R.drawable.start));
 		welcomeSprite.setOffset(0,0);
-		sound = new Sound(R.raw.bongos);
-		sound.play(-1);
-//		sound.play();
+//		sound = new Sound(R.raw.bongos);
+//		Globals.backgroundMusic.play(-1);
+		gameMusic = new GameMusic();
+		gameMusic.playBackgroundMusic();
 	}
 	
 	public void setPopGameMechanics(){	
@@ -60,7 +62,7 @@ public class StartMenuView extends State {
 	@Override
 	public boolean onTouchDown(MotionEvent me){
 		GameInitObject gio = new GameInitObject();		
-		getGame().pushState(new HeroChooseView(gio, Globals.PLAYER_ONE, this));
+		getGame().pushState(new HeroChooseView(gio, Globals.PLAYER_ONE, this, gameMusic));
 		return true;
 	}
 }
