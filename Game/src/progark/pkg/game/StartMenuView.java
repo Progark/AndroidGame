@@ -73,7 +73,7 @@ public class StartMenuView extends State {
 	@Override
 	public boolean onTouchDown(MotionEvent me){
 		GameInitObject gio = new GameInitObject();		
-		getGame().pushState(new HeroChooseView(gio, Globals.PLAYER_ONE, this, gameMusic));
+		getGame().pushState(new CommanderChooseView(gio, Globals.PLAYER_ONE, this, gameMusic));
 		return true;
 	}
 }

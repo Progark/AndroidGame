@@ -8,7 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 
-public class HeroChooseView extends State { 
+public class CommanderChooseView extends State { 
 	private GameInitObject gameInitObject;
 	private Paint textPaint, nextRectButtonPaint, selectedHeroPaint;
 	private Player hero1Player, hero2Player, hero3Player, hero4Player;
@@ -20,7 +20,7 @@ public class HeroChooseView extends State {
 	private int player;
 	private GameMusic gameMusic;
 	
-	public HeroChooseView(GameInitObject gio, int player, StartMenuView smv, GameMusic gameMusic) {
+	public CommanderChooseView(GameInitObject gio, int player, StartMenuView smv, GameMusic gameMusic) {
 		gameInitObject = gio;
 		textPaint = new Paint();
 		textPaint.setColor(Color.BLACK);
@@ -142,7 +142,7 @@ public class HeroChooseView extends State {
 		
 		else if (me.getX() > Globals.canvasWidth - Globals.calculatedTileSize*3 && me.getY() > Globals.canvasHeight - Globals.calculatedTileSize - 50 && me.getX() < Globals.canvasWidth - Globals.calculatedTileSize && me.getY() < Globals.canvasHeight - 50){
 			if (player == 1)
-					getGame().pushState(new HeroChooseView(gameInitObject, Globals.PLAYER_TWO, smv, gameMusic));
+					getGame().pushState(new CommanderChooseView(gameInitObject, Globals.PLAYER_TWO, smv, gameMusic));
 			else
 					getGame().pushState(new GameMechanics(smv, gameInitObject, gameMusic));
 		}
